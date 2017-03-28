@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
-use App\User;
+use App\Jugador;
 use DB;
 
 class LoginController extends Controller
@@ -43,23 +43,24 @@ class LoginController extends Controller
 
     public function show($id)
     {
-        return User::findOrFail($id);
+        return Jugador::findOrFail($id);
 
     }
     public function create(Request $request)
     {
         try{
-        $usuario=new User;
-        $usuario->id_estatus=('1');
-        $usuario->clave=Hash::make($request->get('clave'));
-        $usuario->email=$request->get('email');
-        $usuario->nombre=$request->get('nombre');
-        $usuario->fecha_nacimiento=$request->get('fecha_nacimiento');
-        $usuario->api_token=str_random(64);
-        $saved=$usuario->save();
-        return response()->json(['api_token'=>$usuario->api_token,'success'=>true]);
+        $jugador=new Jugador;
+        $jugador->id_estatus=('1');
+        $jugador->clave=Hash::make($request->get('clave'));
+        $jugador->email=$request->get('email');
+        $jugador->nombre=$request->get('nombre');
+        $jugador->sexo=$request->get('sexo');
+        $jugador->fecha_nacimiento=$request->get('fecha_nacimiento');
+        $jugador->api_token=str_random(64);
+        $saved=$jugador->save();
+        return response()->json(['api_token'=>$jugador->api_token,'success'=>true]);
         }catch(QueryException $ex){ 
-          //dd($ex->getMessage()); 
+          dd($ex->getMessage()); 
           return response()->json(['success'=>false]);
 
         }
