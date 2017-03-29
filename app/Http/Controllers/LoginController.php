@@ -57,10 +57,10 @@ class LoginController extends Controller
         $jugador->sexo=$request->get('sexo');
         $jugador->fecha_nacimiento=$request->get('fecha_nacimiento');
         $jugador->api_token=str_random(64);
-        $saved=$jugador->save();
+        $jugador->save();
         return response()->json(['api_token'=>$jugador->api_token,'success'=>true]);
         }catch(QueryException $ex){ 
-          dd($ex->getMessage()); 
+          //dd($ex->getMessage());
           return response()->json(['success'=>false]);
 
         }
