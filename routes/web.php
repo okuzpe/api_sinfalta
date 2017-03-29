@@ -15,5 +15,5 @@ $app->get('/', function () use ($app) {
     return $app->version();
 });
 $app->get('user/show/{id}', 'LoginController@show');
-$app->post('user/create', 'LoginController@create');
-$app->post('user/login', 'LoginController@index');
+$app->get('user/create', 'LoginController@create');
+$app->get('user/login', 'LoginController@index');
