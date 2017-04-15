@@ -49,9 +49,6 @@ class LoginController extends Controller
     public function create(Request $request)
     {
         try{
-            if (Jugador::where('email', '=', Input::get('email'))->count() > 0) {
-                return response()->json("si existe");
-            }
             $jugador=new Jugador;
             $jugador->id_estatus='1';
             $jugador->clave=Hash::make($request->get('clave'));
