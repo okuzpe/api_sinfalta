@@ -63,9 +63,8 @@ class LoginController extends Controller
             $jugador->save();
             return response()->json(['api_token'=>$jugador->api_token,'success'=>true]);
         }catch(QueryException $ex){ 
-          //dd($ex->getMessage());
+            ($ex->getMessage());
           return response()->json(['success'=>false]);
-
         }
        
     }
