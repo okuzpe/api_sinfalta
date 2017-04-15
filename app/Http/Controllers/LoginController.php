@@ -49,16 +49,19 @@ class LoginController extends Controller
     public function create(Request $request)
     {
         try{
-        $jugador=new Jugador;
-        $jugador->id_estatus=('1');
-        $jugador->clave=Hash::make($request->get('clave'));
-        $jugador->email=$request->get('email');
-        $jugador->nombre=$request->get('nombre');
-        $jugador->sexo=$request->get('sexo');
-        $jugador->fecha_nacimiento=$request->get('fecha_nacimiento');
-        $jugador->api_token=str_random(64);
-        $jugador->save();
-        return response()->json(['api_token'=>$jugador->api_token,'success'=>true]);
+            if (Jugador::where('email', '=', Input::get('email'))->count() > 0) {
+                return response()->json("si existe");
+            }
+            $jugador=new Jugador;
+            $jugador->id_estatus='1';
+            $jugador->clave=Hash::make($request->get('clave'));
+            $jugador->email=$request->get('email');
+            $jugador->nombre=$request->get('nombre');
+            $jugador->sexo=$request->get('sexo');
+            $jugador->fecha_nacimiento=$request->get('fecha_nacimiento');
+            $jugador->api_token=str_random(64);
+            $jugador->save();
+            return response()->json(['api_token'=>$jugador->api_token,'success'=>true]);
         }catch(QueryException $ex){ 
           //dd($ex->getMessage());
           return response()->json(['success'=>false]);
