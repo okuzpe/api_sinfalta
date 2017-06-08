@@ -8,6 +8,9 @@ use App\Jugador;
 use Cloudinary;
 use DB;
 
+use Faker\Provider\File;
+use Faker\Provider\Image;
+use Illuminate\Support\Facades\Storage;
 use JD\Cloudder\Facades\Cloudder;
 use Validator;
 use Illuminate\Http\Request;
@@ -60,8 +63,16 @@ class PerfilController extends Controller
         $datos->peso=$request->get('peso');
         $datos->pie_dominante=$request->get('pie_dominante');
 
+
+        //OPC Foto
+        $publicId="fotoPerfil".$jugador[0]->id_jugador;
+        $options=null;
+        $tags=null;
+
         if (!$validator->fails()) {
-//            $file = $request->get('photo');
+            $file = $request->get('photo');
+
+            Cloudder::upload("data:image/jpg;base64,$file",$publicId);
             $datos->update();
             return response()->json(['success' => true]);
         }else{
