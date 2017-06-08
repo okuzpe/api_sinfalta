@@ -14,6 +14,12 @@
 $app->get('/', function () use ($app) {
     return $app->version();
 });
-$app->get('user/show/{id}', 'LoginController@show');
+$app->post('jugador/perfil/show', 'PerfilController@show');
+$app->post('jugador/perfil/update', 'PerfilController@update');
+
 $app->post('user/create', 'LoginController@create');
 $app->post('user/login', 'LoginController@index');
+
+$app->post('partida/create', 'PartidaController@create');
+$app->post('partida/show', 'PartidaController@index');
+

@@ -78,9 +78,15 @@ $app->singleton(
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
+//$app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
+$app->register(JD\Cloudder\CloudderServiceProvider::class);
+$app->register(JD\Cloudder\Facades\Cloudder::class);
+
+//$app->register(App\Providers\EventServiceProvider::class);
+
+
+//$app->register(Irazasyed\JwtAuthGuard\JwtAuthGuardServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
