@@ -71,7 +71,7 @@ class PerfilController extends Controller
         if (!$validator->fails()) {
             $file = $request->get('photo');
 
-            Cloudder::upload("data:image/png;base64,$file",$publicId,array("width" => 100, "height" => 150, "crop" => "pad"));
+            Cloudder::upload("data:image/png;base64,$file",$publicId,array("width" => 250, "height" => 250, "crop" => "pad"));
             $datos->update();
             return response()->json(['success' => true]);
         }else{
