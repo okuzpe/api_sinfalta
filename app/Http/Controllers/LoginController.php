@@ -33,7 +33,7 @@ class LoginController extends Controller
         $checkPass = Hash::check($clave, $login[0]->clave);
         if ($checkPass) {
             $options=null;
-            $URL_PERFIL=Cloudder::show("fotoPerfil".$login[0]->id_jugador, array ($options));
+            $URL_PERFIL=Cloudder::show("fotoPerfil".$login[0]->id_jugador);// poner , array ($options) sino funciona
             return response()->json(['api_token' => $login[0]->api_token, 'success' => true,'img_perfil'=>$URL_PERFIL]);
         } else {
             return response()->json(['success' => false]);
