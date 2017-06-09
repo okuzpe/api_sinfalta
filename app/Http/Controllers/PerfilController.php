@@ -35,9 +35,9 @@ class PerfilController extends Controller
         if ($show->isEmpty()) {
             return response()->json(['success' => false]);
         } else {
-//            $options=null;
-//            $URL_PERFIL= Cloudder::show('fotoPerfil'.$show[0]->id_jugador, array ($options));
-            return response()->json(['datos' => $show, 'success' => true]);//,'url_perfil'=>$URL_PERFIL]
+            $options=null;
+            $URL_PERFIL= Cloudder::show('fotoPerfil'.$show[0]->id_jugador, array ($options));
+            return response()->json(['datos' => $show, 'success' => true,'url_perfil'=>$URL_PERFIL]);//,'url_perfil'=>$URL_PERFIL]
         }
     }
 
@@ -66,13 +66,12 @@ class PerfilController extends Controller
 
         //OPC Foto
         $publicId="fotoPerfil".$jugador[0]->id_jugador;
-        $options=null;
         $tags=null;
 
         if (!$validator->fails()) {
             $file = $request->get('photo');
 
-            Cloudder::upload("data:image/png;base64,$file",$publicId);
+            Cloudder::upload("data:image/png;base64,$file",$publicId,array("width" => 100, "height" => 150, "crop" => "pad"));
             $datos->update();
             return response()->json(['success' => true]);
         }else{
