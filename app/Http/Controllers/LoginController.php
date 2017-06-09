@@ -24,23 +24,23 @@ class LoginController extends Controller
     {
         $email = $request->input('email');
         $clave = $request->input('clave');
-    if($email!=null and $clave!=null  ) {
+        if($email!=null and $clave!=null and Jugador::where('email', '=', Input::get('email'))->exists()  ) {
 
-        $login = DB::table('jugador')
-            ->select('clave', 'api_token','id_jugador')
-            ->where('email', '=', $email)
-            ->get();
-        $checkPass = Hash::check($clave, $login[0]->clave);
-        if ($checkPass) {
-//            $options=null;
-//            $URL_PERFIL=Cloudder::show("fotoPerfil".$login[0]->id_jugador, array ($options) );// poner , array ($options) sino funciona
-            return response()->json(['api_token' => $login[0]->api_token, 'success' => true]);//,'img_perfil'=>$URL_PERFIL]
-        } else {
+            $login = DB::table('jugador')
+                ->select('clave', 'api_token','id_jugador')
+                ->where('email', '=', $email)
+                ->get();
+            $checkPass = Hash::check($clave, $login[0]->clave);
+            if ($checkPass) {
+    //            $options=null;
+    //            $URL_PERFIL=Cloudder::show("fotoPerfil".$login[0]->id_jugador, array ($options) );// poner , array ($options) sino funciona
+                return response()->json(['api_token' => $login[0]->api_token, 'success' => true]);//,'img_perfil'=>$URL_PERFIL]
+            } else {
+                return response()->json(['success' => false]);
+            }
+        }else{
             return response()->json(['success' => false]);
         }
-
-    }else{return response()->json(['success' => false]);}
-
     }
 
 
