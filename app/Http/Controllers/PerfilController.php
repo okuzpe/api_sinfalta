@@ -37,7 +37,7 @@ class PerfilController extends Controller
         } else {
 
 
-            $URL_PERFIL= Cloudder::show('fotoPerfil'.$show[0]->id_jugador,array ("width" => 250, "height" => 250));
+            $URL_PERFIL= Cloudder::secureShow('fotoPerfil'.$show[0]->id_jugador,array ("width" => 250, "height" => 250));
             return response()->json(['datos' => $show, 'success' => true,'url_perfil'=>$URL_PERFIL]);//,'url_perfil'=>$URL_PERFIL]
         }
     }
