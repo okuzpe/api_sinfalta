@@ -45,9 +45,9 @@ class PerfilController extends Controller
     {
         $validator = Validator::make($request->all(), [
             //'photo' => 'required',  // required| SEPONE ESTO mimes:jpeg,bmp,png'
-            'apodo'=>'required',
-            'altura'=>'required',
-            'peso'=>'required',
+//            'apodo'=>'required',
+//            'altura'=>'required',
+//            'peso'=>'required',
             'pie_dominante'=>'required'
         ]);
 
