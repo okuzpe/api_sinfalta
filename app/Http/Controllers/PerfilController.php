@@ -34,9 +34,10 @@ class PerfilController extends Controller
             ->get();
         if ($show->isEmpty()) {
             return response()->json(['success' => false]);
-        } else {
+        } else
+            $id_jugador=$show[0]->id_jugado;
             //$URL_PERFIL= Cloudder::secureShow('fotoPerfil'.$show[0]->id_jugador,array ("width" => 250, "height" => 250));
-            $URL_PERFIL="https://res.cloudinary.com/hmb2xri8f/image/upload/fotoPerfil".$show->id_jugado;
+            $URL_PERFIL="https://res.cloudinary.com/hmb2xri8f/image/upload/fotoPerfil$id_jugador";
             return response()->json(['datos' => $show, 'success' => true,'url_perfil'=>$URL_PERFIL]);//,'url_perfil'=>$URL_PERFIL]
         }
     }
