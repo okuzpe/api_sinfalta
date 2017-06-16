@@ -58,6 +58,7 @@ class LoginController extends Controller
             $jugador->sexo = $request->get('sexo');
             $jugador->fecha_nacimiento = $request->get('fecha_nacimiento');
             $jugador->api_token = str_random(64);
+            $jugador->imgurl_perfil=0;
             $jugador->save();
 
             return response()->json(['api_token' => $jugador->api_token, 'success' => true]);
