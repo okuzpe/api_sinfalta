@@ -21,5 +21,9 @@ $app->post('user/create', 'LoginController@create');
 $app->post('user/login', 'LoginController@index');
 
 $app->post('partida/create', 'PartidaController@create');
-$app->post('partida/show', 'PartidaController@index');
+$app->post('partida/show', 'PartidaController@show');
+
+$app->post('equipo/create/search/jugador', 'SearchController@equipo');
+
+
 

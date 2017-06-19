@@ -16,14 +16,11 @@ class PartidaController extends Controller
         $this->middleware('auth');
     }
 
-    public function index(Request $request)
+    public function show(Request $request)
     {
         $partidas=DB::table('partida')->where('id_estatus','=','1')
             ->get();
 
-//        for ($i=1;$i<=count($partidas);$i++){
-//            return response()->json([$partidas,'success' => true]);
-//        }
         return response()->json(['partidas'=>$partidas,'success' => true]);
 
 
@@ -40,7 +37,7 @@ class PartidaController extends Controller
 
     public function create(Request $request)
     {
-        $jugador=DB::table('jugador as j')
+        $partida=DB::table('partida')
             ->select('id_jugador')->where('');
     }
 }
