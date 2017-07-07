@@ -28,7 +28,7 @@ class SearchController extends Controller
             $query = trim($request->get('query'));
             $jugadores = DB::table('jugador')
                 ->select('id_jugador','apodo')
-                ->where('apodo', 'LIKE', '%' . $query . '%')
+                ->where('apodo', 'LIKE', $query . '%')
                 ->orderBy('apodo', 'desc')
                 ->limit(10)
                 ->get();
