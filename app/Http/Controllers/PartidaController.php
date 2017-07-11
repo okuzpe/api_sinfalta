@@ -24,15 +24,6 @@ class PartidaController extends Controller
         return response()->json(['partidas'=>$partidas,'success' => true]);
 
 
-
-
-//        foreach ($partidas as $partida){
-//            return response()->json(['id'=>$partida,'success' => true]);
-//            return response()->json($partida);
-//            var_dump($partida->id_partida);
-//           return response()->json(['id_partida'=>$partida->id_partida,$partida,'success' => true]);
-//        }
-
     }
 
     public function create(Request $request)
