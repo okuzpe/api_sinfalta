@@ -47,13 +47,11 @@ class EquipoController extends Controller
             $file= $request->get('img_equipo');
             $equipo->nombre = $request->get('nombre');
             $equipo->lugar = $request->get('lugar');
-            $equipo->descripcion = $request->get('descripcion');
+            $equipo->descripcion = $request->get('descripcion   ');
             $equipo->id_tipoequipo = $request->get('tipo_equipo');
-            if (Input::get('tipo_equipo').equalTo('Futbol')){
-                $equipo->id_estatus = 1;
-            }else{
-                $equipo->id_estatus = 2;
-            }
+
+            $equipo->id_estatus =Input::get('tipo_equipo');
+
             $equipo->id_creador_equipo=$creador;
 
             $publicId="fotoEquipo".$equipo->nombre;
