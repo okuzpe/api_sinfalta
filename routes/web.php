@@ -26,6 +26,8 @@ $app->post('partida/show', 'PartidaController@show');
 $app->post('equipo/create', 'EquipoController@create');
 $app->post('equipo/show', 'EquipoController@show');
 
+$app->post('pantalla/carga', 'CargaController@index');
+
 $app->post('equipo/create/search/jugador', 'SearchController@equipo');
 
 

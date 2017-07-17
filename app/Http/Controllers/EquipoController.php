@@ -49,9 +49,7 @@ class EquipoController extends Controller
             $equipo->lugar = $request->get('lugar');
             $equipo->descripcion = $request->get('descripcion   ');
             $equipo->id_tipoequipo = $request->get('tipo_equipo');
-
             $equipo->id_estatus =Input::get('tipo_equipo');
-
             $equipo->id_creador_equipo=$creador;
 
             $publicId="fotoEquipo".$equipo->nombre;
@@ -63,7 +61,7 @@ class EquipoController extends Controller
             if($equipo->save()) {
                 return response()->json(['success' => true,'estado'=>'equipo creado','img_creada'=>$imagenCreada]);
             }else{
-                return response()->json(['success' => false,'img_creada'=>$imagenCreada,401]);
+                return response()->json(['success' => false,'img_creada'=>$imagenCreada,400]);
             }
         }
 
