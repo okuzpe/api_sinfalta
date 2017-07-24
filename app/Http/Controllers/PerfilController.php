@@ -97,9 +97,9 @@ class PerfilController extends Controller
 
         $average=$request->get('average');
 
-        $position=trim($request->get('position'));
+        $position=(int)trim($request->get('position'));
 
-        switch ($position)
+        switch (intval($position))
         {
             case 0:
                 $dato->apodo=$average;
