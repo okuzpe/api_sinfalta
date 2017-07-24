@@ -95,7 +95,7 @@ class PerfilController extends Controller
 
         $dato=Jugador::find($jugador[0]->id_jugador);
 
-        $average=strtolower($request->get('average'));
+        $average=$request->get('average');
         $position=$request->get('position');
 
         switch ($position)
