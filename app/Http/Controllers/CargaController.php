@@ -30,10 +30,10 @@ class CargaController extends Controller
             ->get();
 
         if (!$tiene->isEmpty()){
-            return response()->json(['success' => 'true','tiene_equipo'=>'true']);
+            return response()->json(['success' => true,'tiene_equipo'=>true]);
 
         }else{
-            return response()->json(['success' => 'true','tiene_equipo'=>'false']);
+            return response()->json(['success' => true,'tiene_equipo'=>false]);
         }
 
 

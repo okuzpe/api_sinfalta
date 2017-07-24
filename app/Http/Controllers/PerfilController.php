@@ -44,15 +44,15 @@ class PerfilController extends Controller
         }
     }
 
-    public function update(Request $request)
+    public function updatefoto(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            //'photo' => 'required',  // required| SEPONE ESTO mimes:jpeg,bmp,png'
+//        $validator = Validator::make($request->all(), [
+//            'photo' => 'required',  // required| SEPONE ESTO mimes:jpeg,bmp,png'
 //            'apodo'=>'required',
 //            'altura'=>'required',
 //            'peso'=>'required',
-            'pie_dominante'=>'required'
-        ]);
+//            'pie_dominante'=>'required'
+//        ]);
 
         $token=$request->get('api_token');
         $jugador=DB::table('jugador')
@@ -60,27 +60,70 @@ class PerfilController extends Controller
             ->where('api_token','=',$token)
             ->get();
 
-        $datos =  Jugador::find($jugador[0]->id_jugador);
-        $datos->apodo=$request->get('apodo');
-        $datos->altura=$request->get('altura');
-        $datos->peso=$request->get('peso');
-        $datos->pie_dominante=$request->get('pie_dominante');
 
+//        $datos =  Jugador::find($jugador[0]->id_jugador);
+//        $datos->apodo=$request->get('apodo');
+//        $datos->altura=$request->get('altura');
+//        $datos->peso=$request->get('peso');
+//        $datos->pie_dominante=$request->get('pie_dominante');
+//
+//
+//        //OPC Foto
+//        $publicId="fotoPerfil".$jugador[0]->id_jugador;
+//
+//
+//        if (!$validator->fails()) {
+//            $file = $request->get('photo');
+//
+//            if(Cloudder::upload("data:image/png;base64,".$file,$publicId,array("width" => 250, "height" => 250))){
+//                $datos->imgurl_perfil=1;
+//            }
+//            $datos->update();
+//            return response()->json(['success' => true]);
+//        }else{
+//            return response()->json(['success' => false]);
+//        }
+    }
 
-        //OPC Foto
-        $publicId="fotoPerfil".$jugador[0]->id_jugador;
+    public function updateAverage(Request $request)
+    {
+        $token=$request->get('api_token');
+        $jugador=DB::table('jugador')
+            ->select('id_jugador')
+            ->where('api_token','=',$token)
+            ->get();
 
+        $dato=Jugador::find($jugador[0]->id_jugador);
 
-        if (!$validator->fails()) {
-            $file = $request->get('photo');
+        $average=strtolower($request->get('average'));
+        $position=$request->get('position');
 
-            if(Cloudder::upload("data:image/png;base64,".$file,$publicId,array("width" => 250, "height" => 250))){
-                $datos->imgurl_perfil=1;
-            }
-            $datos->update();
+        switch ($position)
+        {
+            case 0:
+                $dato->apodo=$average;
+                break;
+            case 1:
+                $dato->altura=$average;
+                break;
+            case 2:
+                $dato->pie_dominante=$average;
+                break;
+            case 3:
+                $dato->peso=$average;
+                break;
+        }
+
+        if ( $dato->update()){
             return response()->json(['success' => true]);
         }else{
             return response()->json(['success' => false]);
         }
+
+//        return response()->json(['success' => $jugador]);
+
+
+
     }
+
 }
