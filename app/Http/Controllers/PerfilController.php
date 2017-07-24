@@ -97,7 +97,7 @@ class PerfilController extends Controller
 
         $average=$request->get('average');
 
-        $position=$request->get('position');
+        $position=trim($request->get('position'));
 
         switch ($position)
         {
