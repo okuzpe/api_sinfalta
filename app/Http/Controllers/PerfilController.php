@@ -27,16 +27,27 @@ class PerfilController extends Controller
 
     public function show(Request $request)
     {
+//        $show = DB::table('jugador')
+//            ->select('apodo', 'altura', 'pie_dominante', 'peso','id_jugador','asistencia', 'imgurl_perfil')
+//            ->where('api_token', '=', $request->get('api_token'))
+//            ->get();
+
         $show = DB::table('jugador')
-            ->select('apodo', 'altura', 'pie_dominante', 'peso','id_jugador',
-                'partidos_jugados', 'partidos_ganados', 'asistencia', 'imgurl_perfil')
+            ->select('apodo', 'altura', 'pie_dominante', 'peso','id_jugador','asistencia', 'imgurl_perfil')
             ->where('api_token', '=', $request->get('api_token'))
-            ->get();
-        if ($show->isEmpty()) {
+            ->first();
+        $estadisticas=DB::table('jugador_estadisticas')
+            ->select('id_tipoequipo','partidos_ganados','partidos_jugados','goles')
+            ->where('id_jugador', '=',$show->id_jugador)
+            ->first();
+
+
+        if (!$show) {
             return response()->json(['success' => false]);
         } else{
-            $id_jugador=$show[0]->id_jugador;
-            $img_jugador=$show[0]->imgurl_perfil;
+            $id_jugador=$show->id_jugador;
+            $img_jugador=$show->imgurl_perfil;
+            $show->estadisticas=$estadisticas;
             //$URL_PERFIL= Cloudder::secureShow('fotoPerfil'.$show[0]->id_jugador,array ("width" => 250, "height" => 250));
 
             $URL_PERFIL="https://res.cloudinary.com/hmb2xri8f/image/upload/fotoPerfil$id_jugador";
