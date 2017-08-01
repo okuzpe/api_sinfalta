@@ -38,8 +38,8 @@ class PerfilController extends Controller
             ->first();
         $estadisticas=DB::table('jugador_estadisticas')
             ->select('id_tipoequipo','partidos_ganados','partidos_jugados','goles')
-            ->where('id_jugador', '=',$show->id_jugador)
-            ->first();
+            ->where('id_jugador', '=',1)
+            ->get();
 
 
         if (!$show) {
@@ -47,10 +47,10 @@ class PerfilController extends Controller
         } else{
             $id_jugador=$show->id_jugador;
             $img_jugador=$show->imgurl_perfil;
-            $show->id_tipoequipo=$estadisticas->id_tipoequipo;
-            $show->partidos_ganados=$estadisticas->partidos_ganados;
-            $show->partidos_jugados=$estadisticas->partidos_jugados;
-            $show->goles=$estadisticas->goles;
+            $show->estadisticas=$estadisticas;
+//            $show->partidos_ganados=$estadisticas->partidos_ganados;
+//            $show->partidos_jugados=$estadisticas->partidos_jugados;
+//            $show->goles=$estadisticas->goles;
             //$URL_PERFIL= Cloudder::secureShow('fotoPerfil'.$show[0]->id_jugador,array ("width" => 250, "height" => 250));
 
             $URL_PERFIL="https://res.cloudinary.com/hmb2xri8f/image/upload/fotoPerfil$id_jugador";
