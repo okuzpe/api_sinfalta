@@ -37,9 +37,11 @@ class PerfilController extends Controller
             ->where('api_token', '=', $request->get('api_token'))
             ->first();
         $estadisticas=DB::table('jugador_estadisticas')
-            ->select('id_tipoequipo','partidos_ganados','partidos_jugados','goles')
-            ->where('id_jugador', '=',1)
+            ->select('id_tipoequipo','partidos_ganados','partidos_jugados','goles','asistencia')
+            ->where('id_jugador', '=',$show->id_jugador)
             ->get();
+
+        $estadisticas->total_asistencia = count($estadisticas[0]->asistencia);
 
 
         if (!$show) {
