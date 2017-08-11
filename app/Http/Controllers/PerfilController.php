@@ -79,7 +79,7 @@ class PerfilController extends Controller
         $datos =  Jugador::find($jugador[0]->id_jugador);
 
 //        OPC Foto
-        $file = $request->get('photo');
+        $file = $request->get('img');
         $publicId="fotoPerfil".$jugador[0]->id_jugador;
         if(Cloudder::upload("data:image/png;base64,".$file,$publicId,array("width" => 250, "height" => 250))){
             $datos->imgurl_perfil=1;
