@@ -15,7 +15,7 @@ $app->get('/', function () use ($app) {
     return $app->version();
 });
 $app->post('jugador/perfil/show', 'PerfilController@show');
-$app->post('jugador/perfil/update', 'PerfilController@update');
+$app->post('jugador/perfil/update/image', 'PerfilController@updatePhoto');
 $app->post('jugador/perfil/update/average', 'PerfilController@updateAverage');
 
 

@@ -60,7 +60,7 @@ class PerfilController extends Controller
         }
     }
 
-    public function updatefoto(Request $request)
+    public function updatePhoto(Request $request)
     {
 //        $validator = Validator::make($request->all(), [
 //            'photo' => 'required',  // required| SEPONE ESTO mimes:jpeg,bmp,png'
@@ -75,6 +75,23 @@ class PerfilController extends Controller
             ->select('id_jugador')
             ->where('api_token','=',$token)
             ->get();
+
+        $datos =  Jugador::find($jugador[0]->id_jugador);
+
+//        OPC Foto
+        $file = $request->get('photo');
+        $publicId="fotoPerfil".$jugador[0]->id_jugador;
+        if(Cloudder::upload("data:image/png;base64,".$file,$publicId,array("width" => 250, "height" => 250))){
+            $datos->imgurl_perfil=1;
+            $datos->update();
+            return response()->json(['success' => true]);
+        }else{
+            return response()->json(['success' => false]);
+        }
+
+
+
+
 
 
 //        $datos =  Jugador::find($jugador[0]->id_jugador);
@@ -138,8 +155,6 @@ class PerfilController extends Controller
         }
 
 //        return response()->json(['success' => $jugador]);
-
-
 
     }
 

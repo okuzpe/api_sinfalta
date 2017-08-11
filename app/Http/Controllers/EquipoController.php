@@ -47,9 +47,9 @@ class EquipoController extends Controller
             $file= $request->get('img_equipo');
             $equipo->nombre = $request->get('nombre');
             $equipo->lugar = $request->get('lugar');
-            $equipo->descripcion = $request->get('descripcion   ');
-            $equipo->id_tipoequipo = $request->get('tipo_equipo');
-            $equipo->id_estatus =Input::get('tipo_equipo');
+            $equipo->descripcion = $request->get('descripcion');
+            $equipo->id_tipoequipo = (int)$request->get('id_tipoequipo');
+            $equipo->id_estatus =1;
             $equipo->id_creador_equipo=$creador;
 
             $publicId="fotoEquipo".$equipo->nombre;
