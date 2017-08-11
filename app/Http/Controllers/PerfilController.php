@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Jugador;
+use App\JugadorEstadisticas;
 
 use Cloudinary;
 use DB;
@@ -36,12 +37,23 @@ class PerfilController extends Controller
             ->select('apodo', 'altura', 'pie_dominante', 'peso','id_jugador','asistencia', 'imgurl_perfil')
             ->where('api_token', '=', $request->get('api_token'))
             ->first();
-        $estadisticas=DB::table('jugador_estadisticas')
-            ->select('id_tipoequipo','partidos_ganados','partidos_jugados','goles','asistencia')
-            ->where('id_jugador', '=',$show->id_jugador)
-            ->get();
 
-        $estadisticas->total_asistencia = count($estadisticas[0]->asistencia);
+        $estadisticas=new JugadorEstadisticas();
+        $estadisticas->partidos_ganados="";
+        $estadisticas->partidos_jugados="";
+        $estadisticas->goles="";
+        $estadisticas->asistencia="";
+
+
+        if (DB::table('jugador_estadisticas')->where('id_jugador', '=',$show->id_jugador)->first()){
+            $estadisticas=DB::table('jugador_estadisticas')
+                ->select('id_tipoequipo','partidos_ganados','partidos_jugados','goles','asistencia')
+                ->where('id_jugador', '=',$show->id_jugador)
+                ->get();
+
+            $estadisticas->total_asistencia = count($estadisticas[0]->asistencia);
+        }
+
 
 
         if (!$show) {
@@ -50,11 +62,6 @@ class PerfilController extends Controller
             $id_jugador=$show->id_jugador;
             $img_jugador=$show->imgurl_perfil;
             $show->estadisticas=$estadisticas;
-//            $show->partidos_ganados=$estadisticas->partidos_ganados;
-//            $show->partidos_jugados=$estadisticas->partidos_jugados;
-//            $show->goles=$estadisticas->goles;
-            //$URL_PERFIL= Cloudder::secureShow('fotoPerfil'.$show[0]->id_jugador,array ("width" => 250, "height" => 250));
-
             $URL_PERFIL="https://res.cloudinary.com/hmb2xri8f/image/upload/fotoPerfil$id_jugador";
             return response()->json(['datos' => $show, 'success' => true,'url_perfil'=>$URL_PERFIL,'tiene_img'=>$img_jugador]);     //,'url_perfil'=>$URL_PERFIL]
         }
@@ -89,33 +96,6 @@ class PerfilController extends Controller
             return response()->json(['success' => false]);
         }
 
-
-
-
-
-
-//        $datos =  Jugador::find($jugador[0]->id_jugador);
-//        $datos->apodo=$request->get('apodo');
-//        $datos->altura=$request->get('altura');
-//        $datos->peso=$request->get('peso');
-//        $datos->pie_dominante=$request->get('pie_dominante');
-//
-//
-//        //OPC Foto
-//        $publicId="fotoPerfil".$jugador[0]->id_jugador;
-//
-//
-//        if (!$validator->fails()) {
-//            $file = $request->get('photo');
-//
-//            if(Cloudder::upload("data:image/png;base64,".$file,$publicId,array("width" => 250, "height" => 250))){
-//                $datos->imgurl_perfil=1;
-//            }
-//            $datos->update();
-//            return response()->json(['success' => true]);
-//        }else{
-//            return response()->json(['success' => false]);
-//        }
     }
 
     public function updateAverage(Request $request)
