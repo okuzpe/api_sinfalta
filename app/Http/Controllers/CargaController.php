@@ -30,10 +30,10 @@ class CargaController extends Controller
             ->get();
 
         if (!$tiene->isEmpty()){
-            return response()->json(['success' => true,'tiene_equipo'=>true]);
+            return response()->json(['success' => true,'tiene_equipo'=>true,'img_url'=>"https://res.cloudinary.com/hmb2xri8f/image/upload/fotoPerfil".$id_jugador]);
 
         }else{
-            return response()->json(['success' => true,'tiene_equipo'=>false]);
+            return response()->json(['success' => true,'tiene_equipo'=>false,'img_url'=>"https://res.cloudinary.com/hmb2xri8f/image/upload/fotoPerfil".$id_jugador]);
         }
 
 
