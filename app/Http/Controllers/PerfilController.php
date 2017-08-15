@@ -45,12 +45,13 @@ class PerfilController extends Controller
         $estadisticas->asistencia=0;
         $estadisticas->id_tipoequipo="1";
 
-
+        $tiene_estadisticas=false;
         if (DB::table('jugador_estadisticas')->where('id_jugador', '=',$show->id_jugador)->first()){
             $estadisticas=DB::table('jugador_estadisticas')
                 ->select('id_tipoequipo','partidos_ganados','partidos_jugados','goles','asistencia')
                 ->where('id_jugador', '=',$show->id_jugador)
                 ->get();
+            $tiene_estadisticas=true;
 
 //            $estadisticas->total_asistencia = count($estadisticas[0]->asistencia);
         }
@@ -62,8 +63,11 @@ class PerfilController extends Controller
         } else{
             $id_jugador=$show->id_jugador;
             $img_jugador=$show->imgurl_perfil;
-            $show->estadisticas=[$estadisticas];
-
+            if ($tiene_estadisticas){
+                $show->estadisticas=$estadisticas;
+            }else{
+                $show->estadisticas=[$estadisticas];
+            }
 
             $URL_PERFIL="https://res.cloudinary.com/hmb2xri8f/image/upload/fotoPerfil$id_jugador";
             return response()->json(['datos' => $show, 'success' => true,'url_perfil'=>$URL_PERFIL,'tiene_img'=>$img_jugador]);     //,'url_perfil'=>$URL_PERFIL]
