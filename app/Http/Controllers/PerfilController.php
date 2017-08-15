@@ -44,7 +44,7 @@ class PerfilController extends Controller
         $estadisticas->goles="";
         $estadisticas->asistencia="";
         $estadisticas->asistencia="";
-        $estadisticas->id_tipoequipo="1";
+        $estadisticas->id_tipoequipo=1;
 
 
         if (DB::table('jugador_estadisticas')->where('id_jugador', '=',$show->id_jugador)->first()){
