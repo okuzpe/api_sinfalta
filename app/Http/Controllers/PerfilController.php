@@ -39,11 +39,10 @@ class PerfilController extends Controller
             ->first();
 
         $estadisticas=new JugadorEstadisticas();
-        $estadisticas->partidos_ganados="";
-        $estadisticas->partidos_jugados="";
-        $estadisticas->goles="";
-        $estadisticas->asistencia="";
-        $estadisticas->asistencia="";
+        $estadisticas->partidos_ganados=0;
+        $estadisticas->partidos_jugados=0;
+        $estadisticas->goles=0;
+        $estadisticas->asistencia=0;
         $estadisticas->id_tipoequipo=1;
 
 
