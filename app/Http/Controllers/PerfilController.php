@@ -43,7 +43,8 @@ class PerfilController extends Controller
         $estadisticas->partidos_jugados="";
         $estadisticas->goles="";
         $estadisticas->asistencia="";
-        $estadisticas->asistencia=1;
+        $estadisticas->asistencia="";
+        $estadisticas->id_tipoequipo=1;
 
 
         if (DB::table('jugador_estadisticas')->where('id_jugador', '=',$show->id_jugador)->first()){
@@ -52,7 +53,7 @@ class PerfilController extends Controller
                 ->where('id_jugador', '=',$show->id_jugador)
                 ->get();
 
-            $estadisticas->total_asistencia = count($estadisticas[0]->asistencia);
+//            $estadisticas->total_asistencia = count($estadisticas[0]->asistencia);
         }
 
 
