@@ -38,19 +38,12 @@ class PerfilController extends Controller
             ->where('api_token', '=', $request->get('api_token'))
             ->first();
 
-        $estadisticas2=new JugadorEstadisticas();
-        $estadisticas2->partidos_ganados=0;
-        $estadisticas2->partidos_jugados=0;
-        $estadisticas2->goles=0;
-        $estadisticas2->asistencia=0;
-        $estadisticas2->id_tipoequipo=2;
-
         $estadisticas=new JugadorEstadisticas();
         $estadisticas->partidos_ganados=0;
         $estadisticas->partidos_jugados=0;
         $estadisticas->goles=0;
         $estadisticas->asistencia=0;
-        $estadisticas->id_tipoequipo=1;
+        $estadisticas->id_tipoequipo="1";
 
 
         if (DB::table('jugador_estadisticas')->where('id_jugador', '=',$show->id_jugador)->first()){
@@ -69,7 +62,7 @@ class PerfilController extends Controller
         } else{
             $id_jugador=$show->id_jugador;
             $img_jugador=$show->imgurl_perfil;
-            $show->estadisticas=[$estadisticas,$estadisticas2];
+            $show->estadisticas=[$estadisticas];
 
 
             $URL_PERFIL="https://res.cloudinary.com/hmb2xri8f/image/upload/fotoPerfil$id_jugador";
