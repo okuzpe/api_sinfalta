@@ -63,7 +63,7 @@ class PerfilController extends Controller
         } else{
             $id_jugador=$show->id_jugador;
             $img_jugador=$show->imgurl_perfil;
-            $show->estadisticas=$estadisticas;
+            $show->estadisticas=[$estadisticas];
             $URL_PERFIL="https://res.cloudinary.com/hmb2xri8f/image/upload/fotoPerfil$id_jugador";
             return response()->json(['datos' => $show, 'success' => true,'url_perfil'=>$URL_PERFIL,'tiene_img'=>$img_jugador]);     //,'url_perfil'=>$URL_PERFIL]
         }
