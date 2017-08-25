@@ -15,7 +15,7 @@ class CargaController extends Controller
 
     public function __construct()
     {
-//        $this->middleware('auth');
+        $this->middleware('auth');
     }
 
     public function index(Request $request){

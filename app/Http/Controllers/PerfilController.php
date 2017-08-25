@@ -28,13 +28,10 @@ class PerfilController extends Controller
 
     public function show(Request $request)
     {
-//        $show = DB::table('jugador')
-//            ->select('apodo', 'altura', 'pie_dominante', 'peso','id_jugador','asistencia', 'imgurl_perfil')
-//            ->where('api_token', '=', $request->get('api_token'))
-//            ->get();
+
 
         $show = DB::table('jugador')
-            ->select('apodo', 'altura', 'pie_dominante', 'peso','id_jugador', 'imgurl_perfil')
+            ->select('apodo', 'altura', 'pie_dominante', 'peso','id_jugador', 'tiene_imagen')
             ->where('api_token', '=', $request->get('api_token'))
             ->first();
 
@@ -69,7 +66,7 @@ class PerfilController extends Controller
             return response()->json(['success' => false]);
         } else{
             $id_jugador=$show->id_jugador;
-            $img_jugador=$show->imgurl_perfil;
+            $img_jugador=$show->tiene_imagen;
             if ($tiene_estadisticas){
                 $show->estadisticas=$estadisticas;
             }else{
