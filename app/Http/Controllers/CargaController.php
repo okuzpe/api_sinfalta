@@ -19,23 +19,27 @@ class CargaController extends Controller
     }
 
     public function index(Request $request){
-        $id_jugador = DB::table('jugador')
-            ->where( 'api_token','=',Input::get('api_token'))
+
+        $token=$request->get('api_token');
+        $jugador = DB::table('jugador')
             ->select('id_jugador','tiene_imagen')
+            ->where('api_token','=',$token)
             ->get();
 
+
+
         $tiene =DB::table('jugador_equipo')
-            ->where( 'id_jugador','=',$id_jugador[0]->id_jugador)
+            ->where( 'id_jugador','=',$jugador[0]->id_jugador)
             ->select('id_jugador','id_equipo','id_rangoequipo')
             ->get();
 
         if (!$tiene->isEmpty()){
-            return response()->json(['success' => true,'tiene_equipo'=>true,'img_url'=>"https://res.cloudinary.com/hmb2xri8f/image/upload/fotoPerfil".$id_jugador[0]->id_jugador,'tiene_imagen'=>$id_jugador[0]->tiene_imagen.""]);
+            return response()->json(['tiene_imagen'=>$jugador[0]->tiene_imagen,'success' => true,'tiene_equipo'=>true,'img_url'=>"https://res.cloudinary.com/hmb2xri8f/image/upload/fotoPerfil".$jugador[0]->id_jugador]);
 
         }else{
-            return response()->json(['success' => true,'tiene_equipo'=>false,'img_url'=>"https://res.cloudinary.com/hmb2xri8f/image/upload/fotoPerfil".$id_jugador[0]->id_jugador,'tiene_imagen'=>$id_jugador[0]->tiene_imagen.""]);
+            return response()->json(['tiene_imagen'=>$jugador[0]->tiene_imagen,'success' => true,'tiene_equipo'=>false,'img_url'=>"https://res.cloudinary.com/hmb2xri8f/image/upload/fotoPerfil".$jugador[0]->id_jugador]);
         }
-
+//
 
     }
 }
