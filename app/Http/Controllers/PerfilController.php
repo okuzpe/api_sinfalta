@@ -29,7 +29,6 @@ class PerfilController extends Controller
     public function show(Request $request)
     {
 
-
         $show = DB::table('jugador')
             ->select('apodo', 'altura', 'pie_dominante', 'peso','id_jugador', 'tiene_imagen')
             ->where('api_token', '=', $request->get('api_token'))
@@ -100,7 +99,7 @@ class PerfilController extends Controller
         $file = $request->get('img');
         $publicId="fotoPerfil".$jugador[0]->id_jugador;
         if(Cloudder::upload("data:image/png;base64,".$file,$publicId,array("width" => 250, "height" => 250))){
-            $datos->imgurl_perfil=1;
+            $datos->tiene_imagen=1;
             $datos->update();
             return response()->json(['success' => true]);
         }else{
