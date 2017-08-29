@@ -35,9 +35,9 @@ class EquipoController extends Controller
 
         $equipo = new Equipo;
 
-//        $existe_equipo=Equipo::where('nombre', '=', Input::get('nombre'))->first();
+        $existe_equipo=Equipo::where('nombre', '=', Input::get('nombre'))->first();
 
-        if (Equipo::where('nombre', '=', Input::get('nombre'))->exists()) {
+        if (!$existe_equipo === null) {
             return response()->json(['success' => false,'estado'=>'el equipo ya existe']);
         } else {
             $api_token = $request->get('api_token');
