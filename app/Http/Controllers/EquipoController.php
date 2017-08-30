@@ -59,6 +59,7 @@ class EquipoController extends Controller
             if ($file) {
                 if(Cloudder::upload("data:image/png;base64," . $file, $publicId, array("width" => 250, "height" => 250))){
                     $imagenCreada=true;
+                    $equipo->tiene_imagen=1;
                 }
             }
             if($equipo->save()) {
