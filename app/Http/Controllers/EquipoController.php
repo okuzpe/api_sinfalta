@@ -35,7 +35,7 @@ class EquipoController extends Controller
 
         $existe_equipo=Equipo::where('nombre', '=', Input::get('nombre'))->first();
 
-        if (!$existe_equipo===null) {
+        if (!$existe_equipo==null) {
             return response()->json(['success' => false,'estado'=>'el equipo ya existe']);
         } else {
             $equipo = new Equipo;
