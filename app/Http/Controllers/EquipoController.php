@@ -32,13 +32,13 @@ class EquipoController extends Controller
     public function create(Request $request)
     {
         $imagenCreada=false;
-        $equipo = new Equipo;
 
         $existe_equipo=Equipo::where('nombre', '=', Input::get('nombre'))->first();
 
         if (!$existe_equipo===null) {
             return response()->json(['success' => false,'estado'=>'el equipo ya existe']);
         } else {
+            $equipo = new Equipo;
             $api_token = $request->get('api_token');
 
             $creador= DB::table('jugador')
