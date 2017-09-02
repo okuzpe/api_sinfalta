@@ -23,19 +23,13 @@ class EquipoController extends Controller
         $this->middleware('auth');
     }
 
-    public function show(Request $request)
-    {
-
-    }
-
-
-    public function crearEquipo(Request $request)
+    public function create(Request $request)
     {
         $imagenCreada=false;
 
 
         if (Equipo::where('nombre', '=', Input::get('nombre'))->exists()) {
-            return response()->json(['success' => true,"estado"=>'El equipo ya existe']);
+            return response()->json(['success' => true,'estado'=>'El equipo ya existe']);
         } else {
             $api_token = $request->get('api_token');
 
