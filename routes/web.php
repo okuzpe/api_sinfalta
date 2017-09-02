@@ -25,7 +25,7 @@ $app->post('user/login', 'LoginController@index');
 $app->post('partida/create', 'PartidaController@create');
 $app->post('partida/show', 'PartidaController@show');
 
-$app->post('equipo/create', 'EquipoController@create');
+$app->post('equipo/create', 'EquipoController@crear');
 $app->post('equipo/show', 'EquipoController@show');
 
 $app->post('pantalla/carga', 'CargaController@index');

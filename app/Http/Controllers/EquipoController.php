@@ -29,12 +29,9 @@ class EquipoController extends Controller
     }
 
 
-    public function create(Request $request)
+    public function crear(Request $request)
     {
         $imagenCreada=false;
-
-        $equipo = new Equipo;
-
         $existe_equipo=Equipo::where('nombre', '=', Input::get('nombre'))->first();
 
         if (!$existe_equipo ==null) {
@@ -46,6 +43,8 @@ class EquipoController extends Controller
                 ->select('id_jugador')
                 ->where('api_token', '=', $api_token)
                 ->first()->id_jugador;
+
+            $equipo = new Equipo;
 
             $file= $request->get('img_equipo');
             $equipo->nombre = $request->get('nombre');
