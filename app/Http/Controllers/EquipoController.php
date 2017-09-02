@@ -29,13 +29,13 @@ class EquipoController extends Controller
     }
 
 
-    public function crear(Request $request)
+    public function crearEquipo(Request $request)
     {
         $imagenCreada=false;
-        $existe_equipo=Equipo::where('nombre', '=', Input::get('nombre'))->first();
 
-        if (!$existe_equipo ==null) {
-            return response()->json(['success' => false,"estado"=>'El equipo ya existe']);
+
+        if (Equipo::where('nombre', '=', Input::get('nombre'))->exists()) {
+            return response()->json(['success' => true,"estado"=>'El equipo ya existe']);
         } else {
             $api_token = $request->get('api_token');
 
@@ -62,9 +62,9 @@ class EquipoController extends Controller
                 }
             }
             if($equipo->save()) {
-                return response()->json(['success' => true,"estado"=>'Equipo creado exitosamente','img_creada'=>$imagenCreada]);
+                return response()->json(['success' => true,'estado'=>'Equipo creado exitosamente','img_creada'=>$imagenCreada]);
             }else{
-                return response()->json(['success' => false,"estado"=>'No se pudo crear el equipo','img_creada'=>$imagenCreada,400]);
+                return response()->json(['success' => true,'estado'=>'No se pudo crear el equipo','img_creada'=>$imagenCreada,400]);
             }
         }
 
