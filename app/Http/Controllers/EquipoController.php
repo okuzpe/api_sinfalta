@@ -28,9 +28,7 @@ class EquipoController extends Controller
         $imagenCreada=false;
 
 
-        if (Equipo::where('nombre', '=', Input::get('nombre'))->exists()) {
-            return response()->json(['success' => false,"estado"=>"El equipo ya existe"]);
-        } else {
+        if (!Equipo::where('nombre', '=', Input::get('nombre'))->exists()) {
             $api_token = $request->get('api_token');
 
             $creador= DB::table('jugador')
@@ -60,8 +58,8 @@ class EquipoController extends Controller
             }else{
                 return response()->json(['success' => false,"estado"=>"No se pudo crear el equipo",'img_creada'=>$imagenCreada]);
             }
-
-
+        } else {
+            return response()->json(['success' => false,"estado"=>"El equipo ya existe"]);
         }
 
     }
