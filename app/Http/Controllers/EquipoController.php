@@ -27,8 +27,9 @@ class EquipoController extends Controller
     {
         $imagenCreada=false;
 
+        $existe_equipo=Equipo::where('nombre', '=', Input::get('nombre'))->first();;
 
-        if (!Equipo::where('nombre', '=', Input::get('nombre'))->exists()) {
+        if (is_null($existe_equipo)) {
             $api_token = $request->get('api_token');
 
             $creador= DB::table('jugador')
