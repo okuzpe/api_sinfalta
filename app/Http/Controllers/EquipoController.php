@@ -29,7 +29,7 @@ class EquipoController extends Controller
 
 
         if (Equipo::where('nombre', '=', Input::get('nombre'))->exists()) {
-            return response()->json(['success' => false,"estado"=>'El equipo ya existe']);
+            return response()->json(['success' => false,"estado"=>"El equipo ya existe"]);
         } else {
             $api_token = $request->get('api_token');
 
@@ -56,9 +56,9 @@ class EquipoController extends Controller
                 }
             }
             if($equipo->save()) {
-                return response()->json(['success' => true,"estado"=>'Equipo creado exitosamente','img_creada'=>$imagenCreada]);
+                return response()->json(['success' => true,"estado"=>"Equipo creado exitosamente",'img_creada'=>$imagenCreada]);
             }else{
-                return response()->json(['success' => false,"estado"=>'No se pudo crear el equipo','img_creada'=>$imagenCreada]);
+                return response()->json(['success' => false,"estado"=>"No se pudo crear el equipo",'img_creada'=>$imagenCreada]);
             }
 
 
