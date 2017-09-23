@@ -87,8 +87,10 @@ class EquipoController extends Controller
                 $equipos[$i]->id_equipo;
                 $equipos[$i]->jugadores_del_equipo = DB::table('jugador_equipo')
                     ->where('id_equipo', '=', $equipos[$i]->id_equipo)
-                    ->select('id_jugador', 'id_rangoequipo')
+                    ->join('jugador','jugador_equipo.id_jugador','=','jugador.id_jugador')
+                    ->select('jugador_equipo.id_jugador', 'jugador_equipo.id_rangoequipo','jugador.nombre')
                     ->get();
+
                 $i++;
 
             }
