@@ -77,7 +77,7 @@ class EquipoController extends Controller
         $equipos=DB::table('jugador_equipo')
             ->where( 'id_jugador','=',$jugador[0]->id_jugador)
             ->join('equipo','equipo.id_equipo','=','jugador_equipo.id_equipo')
-            ->select('jugador_equipo.id_equipo','jugador_equipo.id_rangoequipo','equipo.nombre')
+            ->select('equipo.nombre','jugador_equipo.id_equipo','jugador_equipo.id_rangoequipo')
             ->get();
 
         if (count($jugador) and count($equipos)) {
