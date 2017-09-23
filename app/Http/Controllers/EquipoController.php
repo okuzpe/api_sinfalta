@@ -64,4 +64,39 @@ class EquipoController extends Controller
         }
 
     }
+    public function show(Request $request)
+    {
+
+        $token=$request->get('api_token');
+
+        $jugador = DB::table('jugador')
+            ->select('id_jugador')
+            ->where('api_token','=',$token)
+            ->get();
+
+        $equipos=DB::table('jugador_equipo')
+            ->where( 'id_jugador','=',$jugador[0]->id_jugador)
+            ->join('equipo','equipo.id_equipo','=','jugador_equipo.id_equipo')
+            ->select('jugador_equipo.id_equipo','jugador_equipo.id_rangoequipo','equipo.nombre')
+            ->get();
+
+        if (count($jugador) and count($equipos)) {
+            $i = 0;
+            foreach ($equipos as $e) {
+
+                $equipos[$i]->id_equipo;
+                $equipos[$i]->jugadores_del_equipo = DB::table('jugador_equipo')
+                    ->where('id_equipo', '=', $equipos[$i]->id_equipo)
+                    ->select('id_jugador', 'id_rangoequipo')
+                    ->get();
+                $i++;
+
+            }
+            return response()->json(['success'=>true,'equipos'=>$equipos]);
+        }else{
+            return response()->json(['success'=>false]);
+        }
+
+    }
+
 }
