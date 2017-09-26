@@ -28,11 +28,22 @@ class PerfilController extends Controller
 
     public function show(Request $request)
     {
+        $buscar_otro=$request->get("id_buscar");
 
-        $show = DB::table('jugador')
-            ->select('apodo', 'altura', 'pie_dominante', 'peso','id_jugador', 'tiene_imagen')
-            ->where('api_token', '=', $request->get('api_token'))
-            ->first();
+
+        if(!$buscar_otro>0){
+            $show = DB::table('jugador')
+                ->select('apodo', 'altura', 'pie_dominante', 'peso','id_jugador', 'tiene_imagen')
+                ->where('api_token', '=', $request->get('api_token'))
+                ->first();
+        }else{
+            $show = DB::table('jugador')
+                ->select('apodo', 'altura', 'pie_dominante', 'peso','id_jugador', 'tiene_imagen')
+                ->where('id_jugador', '=', $request->get("id_buscar"))
+                ->first();
+        }
+//        return response()->json([$show]);
+
 
         $estadisticas2=new JugadorEstadisticas();
         $estadisticas2->partidos_ganados=0;
