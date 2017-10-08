@@ -75,9 +75,9 @@ class EquipoController extends Controller
             ->get();
 
         $equipos=DB::table('jugador_equipo')
-            ->where( 'id_jugador','=',$jugador[0]->id_jugador)
+            ->where('id_jugador','=',$jugador[0]->id_jugador)
             ->join('equipo','equipo.id_equipo','=','jugador_equipo.id_equipo')
-            ->select('equipo.nombre','jugador_equipo.id_equipo','jugador_equipo.id_rangoequipo')
+            ->select('equipo.nombre','jugador_equipo.id_equipo','jugador_equipo.id_rangoequipo','equipo.tiene_imagen')
             ->get();
 
         if (count($jugador) and count($equipos)) {
@@ -88,7 +88,7 @@ class EquipoController extends Controller
                 $equipos[$i]->jugadores_del_equipo = DB::table('jugador_equipo')
                     ->where('id_equipo', '=', $equipos[$i]->id_equipo)
                     ->join('jugador','jugador_equipo.id_jugador','=','jugador.id_jugador')
-                    ->select('jugador_equipo.id_jugador', 'jugador_equipo.id_rangoequipo','jugador.nombre')
+                    ->select('jugador_equipo.id_jugador', 'jugador_equipo.id_rangoequipo','jugador.nombre','jugador.tiene_imagen')
                     ->get();
 
                 $i++;
