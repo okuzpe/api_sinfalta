@@ -18,7 +18,7 @@ class SearchController extends Controller
 
     public function __construct()
     {
-        //$this->middleware('auth', ['except' => ['create', 'index']]);
+        $this->middleware('auth', ['except' => ['create', 'index']]);
 
     }
 
@@ -27,9 +27,10 @@ class SearchController extends Controller
         if ($request) {
             $query = trim($request->get('query'));
             $jugadores = DB::table('jugador')
-                ->select('id_jugador','apodo')
-                ->where('apodo', 'LIKE', $query . '%')
-                ->where('id_jugador','<>',$request->get('api_token'))
+                ->select('id_jugador','apodo','nombre','tiene_imagen')
+                ->orwhere('apodo', 'LIKE', $query . '%')
+                ->orwhere('nombre', 'LIKE', $query . '%')
+                ->where('api_token','<>',$request->get('api_token'))
                 ->orderBy('apodo', 'desc')
                 ->limit(10)
                 ->get();
