@@ -31,6 +31,7 @@ class InvitarController extends Controller
             ->join('jugador_equipo', 'jugador_equipo.id_jugador', '=', 'jugador.id_jugador')
             ->select('jugador.id_jugador','jugador_equipo.id_rangoequipo')
             ->where('jugador.api_token', '=', $request->get('api_token'))
+            -where()
             ->first();
 
         $existe_invitacion=Invitaciones::where('id_invitador', '=', $id_jugador->id_jugador)
@@ -49,6 +50,7 @@ class InvitarController extends Controller
                 $invitacion->id_invitador= $id_jugador->id_jugador;
                 $invitacion->id_invitado = $request->get('id_invitado');
                 $invitacion->id_equipo=$request->get('id_equipo');
+                $invitacion->id_estatus= 3;
                 if ($invitacion->save()){
                     return response()->json(['success' => true,"estado"=>"Jugador invitado."]);
                 }else{
