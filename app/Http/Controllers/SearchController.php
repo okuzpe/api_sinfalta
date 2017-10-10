@@ -29,6 +29,7 @@ class SearchController extends Controller
             $jugadores = DB::table('jugador')
                 ->select('id_jugador','apodo')
                 ->where('apodo', 'LIKE', $query . '%')
+                ->where('id_jugador','<>',$request->get('api_token'))
                 ->orderBy('apodo', 'desc')
                 ->limit(10)
                 ->get();
