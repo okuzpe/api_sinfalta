@@ -31,7 +31,6 @@ class InvitarController extends Controller
             ->join('jugador_equipo', 'jugador_equipo.id_jugador', '=', 'jugador.id_jugador')
             ->select('jugador.id_jugador','jugador_equipo.id_rangoequipo')
             ->where('jugador.api_token', '=', $request->get('api_token'))
-            -where()
             ->first();
 
         $existe_invitacion=Invitaciones::where('id_invitador', '=', $id_jugador->id_jugador)
