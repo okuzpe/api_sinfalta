@@ -34,5 +34,7 @@ $app->post('search/jugador', 'SearchController@equipo');
 
 $app->post('invitar/jugador', 'InvitarController@invitarAEquipo');
 
+$app->post('amigos/show', 'InfoJugadorController@amigosMostrar');
+
 
 
