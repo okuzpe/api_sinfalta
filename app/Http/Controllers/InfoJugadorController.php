@@ -41,7 +41,7 @@ class InfoJugadorController extends Controller
 
             $amigos[$i]->datos =DB::table('jugador')
                 ->where('id_jugador','=',$amigos[$i]->id_amigo)
-                ->select('nombre','apodo')
+                ->select('nombre','apodo','tiene_imagen')
                 ->get();
             $i++;
 
