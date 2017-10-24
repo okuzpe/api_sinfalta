@@ -26,20 +26,14 @@ class SearchController extends Controller
     {
         if ($request) {
             $query = trim($request->get('query'));
-            $id_jugador = DB::table('jugador')
-                ->select('apodo')
-                ->where('api_token', '=', $request->get('api_token'))
-                ->first();
-
             $jugadores = DB::table('jugador')
                 ->select('id_jugador','apodo','nombre','tiene_imagen')
                 ->where('nombre', 'LIKE', $query . '%')
-                ->orwhere('apodo', 'LIKE', $query . '%')
                 ->where('api_token','<>',$request->get('api_token'))
-                ->where('apodo','<>','%'.$id_jugador->apodo)
                 ->orderBy('apodo', 'desc')
                 ->limit(10)
                 ->get();
+
             return response()->json(['success' => true,'jugadores' => $jugadores]);
         }else{
             return response()->json(['success' => false]);
