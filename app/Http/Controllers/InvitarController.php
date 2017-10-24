@@ -94,7 +94,7 @@ class InvitarController extends Controller
 
                 }
             }else{
-                return response()->json(['success' => true, "estado" => "Eljugador ".$id_jugador->nombre." esta pendiente por aceptar la invitacion"]);
+                return response()->json(['success' => true, "estado" => "El jugador ".$id_jugador->nombre." esta pendiente por aceptar la invitacion"]);
 
             }
         }
