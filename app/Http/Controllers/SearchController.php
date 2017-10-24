@@ -33,10 +33,10 @@ class SearchController extends Controller
 
             $jugadores = DB::table('jugador')
                 ->select('id_jugador','apodo','nombre','tiene_imagen')
+                ->where('nombre', 'LIKE', $query . '%')
                 ->orwhere('apodo', 'LIKE', $query . '%')
-                ->orwhere('nombre', 'LIKE', $query . '%')
                 ->where('api_token','<>',$request->get('api_token'))
-                ->where('apodo','<>',$id_jugador)
+                ->where('apodo','<>','%'.$id_jugador->apodo)
                 ->orderBy('apodo', 'desc')
                 ->limit(10)
                 ->get();
