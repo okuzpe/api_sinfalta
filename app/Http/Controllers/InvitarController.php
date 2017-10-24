@@ -28,7 +28,8 @@ class InvitarController extends Controller
     public function invitar(Request $request)
     {
         $invitar_jugador= $request->get('invitar_jugador');
-        if (!$invitar_jugador) {
+        $bool = filter_var($invitar_jugador, FILTER_VALIDATE_BOOLEAN);
+        if (!$bool) {
 
             $id_jugador = DB::table('jugador')
                 ->join('jugador_equipo', 'jugador_equipo.id_jugador', '=', 'jugador.id_jugador')
@@ -83,17 +84,17 @@ class InvitarController extends Controller
                         ->where('id_amigo','=',$request->get('id_invitado'))
                         ->exists()){
                     if ($invitacion_amigo->save()){
-                        return response()->json(['success' => true, "estado" => "jugador ".$id_jugador->nombre." invitado a tu lista de amigos"]);
+                        return response()->json(['success' => true, "estado" => "El jugador ".$id_jugador->nombre." invitado a tu lista de amigos"]);
 
                     }else{
-                        return response()->json(['success' => false, "estado" => "jugador ".$id_jugador->nombre." no se pudo invitar"]);
+                        return response()->json(['success' => false, "estado" => "El jugador ".$id_jugador->nombre." no se pudo invitar"]);
                     }
                 }else{
-                    return response()->json(['success' => false, "estado" => "jugador ".$id_jugador->nombre." y usted ya son amigos"]);
+                    return response()->json(['success' => false, "estado" => "El jugador ".$id_jugador->nombre." y usted ya son amigos"]);
 
                 }
             }else{
-                return response()->json(['success' => false, "estado" => "jugador ".$id_jugador->nombre." esta pendiente por aceptar la invitacion"]);
+                return response()->json(['success' => false, "estado" => "El jugador ".$id_jugador->nombre." esta pendiente por aceptar la invitacion"]);
             }
         }
     }
