@@ -87,14 +87,15 @@ class InvitarController extends Controller
                         return response()->json(['success' => true, "estado" => "El jugador ".$id_jugador->nombre." se ha invitado a tu lista de amigos"]);
 
                     }else{
-                        return response()->json(['success' => false, "estado" => "No se pudo invitar al jugador".$id_jugador->nombre." a tu lista de amigos"]);
+                        return response()->json(['success' => true, "estado" => "No se pudo invitar al jugador".$id_jugador->nombre." a tu lista de amigos"]);
                     }
                 }else{
-                    return response()->json(['success' => false, "estado" => "El jugador ".$id_jugador->nombre." y usted ya son amigos"]);
+                    return response()->json(['success' => true, "estado" => "El jugador ".$id_jugador->nombre." y usted ya son amigos"]);
 
                 }
             }else{
-                return response()->json(['success' => false, "estado" => "El jugador ".$id_jugador->nombre." esta pendiente por aceptar la invitacion"]);
+                return response()->json(['success' => true, "estado" => "Eljugador ".$id_jugador->nombre." esta pendiente por aceptar la invitacion"]);
+
             }
         }
     }
