@@ -31,6 +31,7 @@ class SearchController extends Controller
                 ->orwhere('apodo', 'LIKE', $query . '%')
                 ->orwhere('nombre', 'LIKE', $query . '%')
                 ->where('api_token','<>',$request->get('api_token'))
+                ->where('apodo','<>',$query . '%')
                 ->orderBy('apodo', 'desc')
                 ->limit(10)
                 ->get();
