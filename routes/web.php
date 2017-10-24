@@ -32,7 +32,7 @@ $app->post('pantalla/carga', 'CargaController@index');
 
 $app->post('search/jugador', 'SearchController@equipo');
 
-$app->post('invitar/jugador', 'InvitarController@invitarAEquipo');
+$app->post('invitar/jugador', 'InvitarController@invitar');
 
 $app->post('amigos/show', 'InfoJugadorController@amigosMostrar');
 
