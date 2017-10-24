@@ -64,14 +64,37 @@ class InvitarController extends Controller
                 return response()->json(['success' => false, "estado" => "No tienes los privilegios para invitar"]);
             }
         }else{
+
             $id_jugador = DB::table('jugador')
                 ->select('id_jugador','nombre')
                 ->where('api_toekn', '=', $request->get('api_token'))
                 ->get();
             $invitacion_amigo = new InvitacionesAmigos();
-            $invitacion_amigo->id_invitador=$id_jugador;
+            $invitacion_amigo->id_invitador=$id_jugador->id_jugador;
             $invitacion_amigo->id_invitado=$request->get('id_invitado');
-            return response()->json(['success' => true, "estado" => "jugador ".$id_jugador->nombre." invitado a tu lista de amigos"]);
+
+            if(!DB::table('invitaciones_amigos')
+                ->where('id_invitador','=',$id_jugador->id_jugador)
+                ->where('id_invitado','=',$request->get('id_invitado'))
+                ->exists()){
+
+                if (!DB::table('amigos')
+                        ->where('id_jugador','=',$id_jugador->id_jugador)
+                        ->where('id_amigo','=',$request->get('id_invitado'))
+                        ->exists()){
+                    if ($invitacion_amigo->save()){
+                        return response()->json(['success' => true, "estado" => "jugador ".$id_jugador->nombre." invitado a tu lista de amigos"]);
+
+                    }else{
+                        return response()->json(['success' => false, "estado" => "jugador ".$id_jugador->nombre." no se pudo invitar"]);
+                    }
+                }else{
+                    return response()->json(['success' => false, "estado" => "jugador ".$id_jugador->nombre." y usted ya son amigos"]);
+
+                }
+            }else{
+                return response()->json(['success' => false, "estado" => "jugador ".$id_jugador->nombre." esta pendiente por aceptar la invitacion"]);
+            }
         }
     }
 
