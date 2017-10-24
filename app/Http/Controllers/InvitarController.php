@@ -84,10 +84,10 @@ class InvitarController extends Controller
                         ->where('id_amigo','=',$request->get('id_invitado'))
                         ->exists()){
                     if ($invitacion_amigo->save()){
-                        return response()->json(['success' => true, "estado" => "El jugador ".$id_jugador->nombre." invitado a tu lista de amigos"]);
+                        return response()->json(['success' => true, "estado" => "El jugador ".$id_jugador->nombre." se ha invitado a tu lista de amigos"]);
 
                     }else{
-                        return response()->json(['success' => false, "estado" => "El jugador ".$id_jugador->nombre." no se pudo invitar"]);
+                        return response()->json(['success' => false, "estado" => "No se pudo invitar al jugador".$id_jugador->nombre." a tu lista de amigos"]);
                     }
                 }else{
                     return response()->json(['success' => false, "estado" => "El jugador ".$id_jugador->nombre." y usted ya son amigos"]);
