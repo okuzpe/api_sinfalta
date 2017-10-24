@@ -67,8 +67,8 @@ class InvitarController extends Controller
 
             $id_jugador = DB::table('jugador')
                 ->select('id_jugador','nombre')
-                ->where('api_toekn', '=', $request->get('api_token'))
-                ->get();
+                ->where('api_token', '=', $request->get('api_token'))
+                ->first();
             $invitacion_amigo = new InvitacionesAmigos();
             $invitacion_amigo->id_invitador=$id_jugador->id_jugador;
             $invitacion_amigo->id_invitado=$request->get('id_invitado');
