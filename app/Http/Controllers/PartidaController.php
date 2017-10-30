@@ -31,4 +31,26 @@ class PartidaController extends Controller
         $partida=DB::table('partida')
             ->select('id_jugador')->where('');
     }
+
+    public function infoEquipos(Request $request)
+    {
+        $token=$request->get('api_token');
+        $jugador = DB::table('jugador')
+            ->select('id_jugador')
+            ->where('api_token','=',$token)
+            ->get();
+
+        $equipos=DB::table('jugador_equipo')
+            ->where('jugador_equipo.id_jugador','=',$jugador[0]->id_jugador)
+            ->join('equipo','jugador_equipo.id_equipo','=','equipo.id_equipo')
+            ->select('equipo.id_equipo','equipo.nombre')
+            ->get();
+
+        if (!$equipos->isEmpty()){
+            return response()->json(['success'=>true,'estado'=>'tiene equipos','equipos'=>$equipos]);
+        }else{
+            return response()->json(['success'=>false,'estado'=>'no tiene equipos','equipos'=>$equipos]);
+        }
+
+    }
 }
