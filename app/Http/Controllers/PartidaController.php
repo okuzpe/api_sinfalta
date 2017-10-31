@@ -29,7 +29,10 @@ class PartidaController extends Controller
     public function create(Request $request)
     {
         $api_token = trim($request->get('api_token'));
-
+        $creador= DB::table('jugador')
+            ->select('id_jugador')
+            ->where('api_token', '=', $api_token)
+            ->first()->id_jugador;
         $nombre=trim($request->get('nombre'));
         $equipo=DB::table('equipo')
             ->where('nombre', '=', $nombre)
@@ -39,13 +42,14 @@ class PartidaController extends Controller
 
         $partida = new Partida();
 
+        $partida->id_estatus = 1;
+        $partida->id_creador = $creador;
+        $partida->id_tipopartida=$equipo->id_tipoequipo;
         $partida->longitud = $request->get('lon');
         $partida->latitud = $request->get('lat');
         $partida->descripcion = $request->get('descripcion');
-        $partida->fechahora_inicio = "2017-12-12 11:00:00";
-        $partida->equipo_creador = 1;
-        $partida->id_estatus = 1;
-        $partida->id_tipopartida=1;
+        $partida->fechahora_inicio = $request->get('fechahora_inico');
+        $partida->equipo_creador = $equipo->id_equipo;
 
         if($partida->save()) {
             return response()->json(['success' => true,"estado"=>"Partida creado exitosamente"]);
