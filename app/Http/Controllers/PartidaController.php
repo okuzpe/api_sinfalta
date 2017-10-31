@@ -43,9 +43,9 @@ class PartidaController extends Controller
         $partida->latitud = $request->get('lat');
         $partida->descripcion = $request->get('descripcion');
         $partida->fechahora_inicio = "2017-12-12 11:00:00";
-        $partida->equipo_creador = $equipo->id_equipo;
+        $partida->equipo_creador = 1;
         $partida->id_estatus = 1;
-        $partida->id_tipopartida=$equipo->id_tipoequipo;
+        $partida->id_tipopartida=1;
 
         if($partida->save()) {
             return response()->json(['success' => true,"estado"=>"Partida creado exitosamente"]);
