@@ -42,7 +42,7 @@ class PartidaController extends Controller
         $partida->longitud = $request->get('lon');
         $partida->latitud = $request->get('lat');
         $partida->descripcion = $request->get('descripcion');
-        $partida->fechahora_inicio = $request->get('dateTime');
+        $partida->fechahora_inicio = $request->get('fechahora_inico');
         $partida->equipo_creador = $equipo->id_equipo;
         $partida->id_estatus = 1;
         $partida->id_tipopartida=$equipo->id_tipoequipo;
