@@ -28,10 +28,31 @@ class PartidaController extends Controller
 
     public function create(Request $request)
     {
-        $partida=DB::table('partida')
-            ->select('id_jugador')->where('');
+        $api_token = trim($request->get('api_token'));
 
-        return response()->json(['success'=>true]);
+        $nombre=trim($request->get('nombre'));
+        $id_tipoequipo=DB::table('equipo')
+            ->select('id_equipo')
+            ->where('nombre', '=', $nombre)
+            ->first();
+
+
+        $partida = new Partida();
+
+        $partida->nombre = $nombre;
+        $partida->longitud = $request->get('lon');
+        $partida->latitud = $request->get('lat');
+        $partida->descripcion = $request->get('descripcion');
+        $partida->fechahora_inicio = $request->get('dateTime');
+        $partida->id_estatus = 1;
+        $partida->id_tipopartida=$id_tipoequipo;
+
+        if($partida->save()) {
+            return response()->json(['success' => true,"estado"=>"Partida creado exitosamente"]);
+        }else{
+            return response()->json(['success' => false,"estado"=>"No se pudo crear la partida"]);
+        }
+
     }
 
     public function infoEquipos(Request $request)
