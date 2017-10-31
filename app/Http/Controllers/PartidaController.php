@@ -40,6 +40,9 @@ class PartidaController extends Controller
             ->first();
 
 
+        $date =date_create($request->get('fechahora_inico'));
+        $date->format('Y-m-d H:i:s');
+
         $partida = new Partida();
 
         $partida->id_estatus = 1;
@@ -48,7 +51,7 @@ class PartidaController extends Controller
         $partida->longitud = $request->get('lon');
         $partida->latitud = $request->get('lat');
         $partida->descripcion = $request->get('descripcion');
-        $partida->fechahora_inicio = $request->get('fechahora_inico');
+        $partida->fechahora_inicio = $date;
         $partida->equipo_creador = $equipo->id_equipo;
 
         if($partida->save()) {
@@ -70,7 +73,7 @@ class PartidaController extends Controller
         $equipos=DB::table('jugador_equipo')
             ->where('jugador_equipo.id_jugador','=',$jugador[0]->id_jugador)
             ->join('equipo','jugador_equipo.id_equipo','=','equipo.id_equipo')
-            ->select('equipo.id_equipo','equipo.nombre')
+            ->select('equipo.nombre')
             ->get();
 
         if (!$equipos->isEmpty()){
