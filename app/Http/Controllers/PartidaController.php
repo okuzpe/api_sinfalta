@@ -18,7 +18,9 @@ class PartidaController extends Controller
 
     public function show(Request $request)
     {
-        $partidas=DB::table('partida')->where('id_estatus','=','1')
+        $partidas=DB::table('partida')
+            ->where('id_estatus','=','1')
+            ->select('id_partida','latitud','longitud')
             ->get();
 
         return response()->json(['partidas'=>$partidas,'success' => true]);
