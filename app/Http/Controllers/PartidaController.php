@@ -32,20 +32,19 @@ class PartidaController extends Controller
 
         $nombre=trim($request->get('nombre'));
         $id_tipoequipo=DB::table('equipo')
-            ->select('id_equipo')
             ->where('nombre', '=', $nombre)
-            ->first();
+            ->select('id_equipo')
+            ->get();
 
 
         $partida = new Partida();
 
-        $partida->nombre = $nombre;
         $partida->longitud = $request->get('lon');
         $partida->latitud = $request->get('lat');
         $partida->descripcion = $request->get('descripcion');
         $partida->fechahora_inicio = $request->get('dateTime');
         $partida->id_estatus = 1;
-        $partida->id_tipopartida=$id_tipoequipo;
+        $partida->id_tipopartida=$id_tipoequipo[0]->id_equipo;
 
         if($partida->save()) {
             return response()->json(['success' => true,"estado"=>"Partida creado exitosamente"]);
