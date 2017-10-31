@@ -30,6 +30,8 @@ class PartidaController extends Controller
     {
         $partida=DB::table('partida')
             ->select('id_jugador')->where('');
+
+        return response()->json(['success'=>true]);
     }
 
     public function infoEquipos(Request $request)
