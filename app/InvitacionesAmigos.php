@@ -12,7 +12,7 @@ class InvitacionesAmigos extends Model implements AuthenticatableContract, Autho
 {
     use Authenticatable, Authorizable;
     protected $table='invitaciones_amigos';
-    protected $primaryKey='id_invitacione';
+    protected $primaryKey='id_invitacion';
 
     /**
      * The attributes that are mass assignable.
