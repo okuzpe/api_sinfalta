@@ -11,7 +11,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 class InvitacionesEquipo extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable, Authorizable;
-    protected $table='invitaciones';
+    protected $table='invitaciones_equipo';
     protected $primaryKey='id_invitacion';
 
     /**
