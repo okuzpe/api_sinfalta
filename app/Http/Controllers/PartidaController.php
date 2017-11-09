@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
+use DateTimeZone;
 use DB;
 use App\Partida;
 use Illuminate\Http\Request;
@@ -56,10 +58,19 @@ class PartidaController extends Controller
         $partida->fechahora_inicio = $date;
         $partida->equipo_creador = $equipo->id_equipo;
 
-        if($partida->save()) {
-            return response()->json(['success' => true,"estado"=>"Partida creado exitosamente"]);
+        $cantidad_partidas_creadas=DB::table('partida')
+            ->where('equipo_creador', '=', $equipo->id_equipo)
+            ->where('id_estatus', '=', '1')
+            ->count();
+
+        if($cantidad_partidas_creadas<=3){
+            if($partida->save()) {
+                return response()->json(['success' => true,"estado"=>"Partida creado exitosamente"]);
+            }else{
+                return response()->json(['success' => false,"estado"=>"No se pudo crear la partida"]);
+            }
         }else{
-            return response()->json(['success' => false,"estado"=>"No se pudo crear la partida"]);
+            return response()->json(['success' => false,"estado"=>"No se pudo crear la partida, no se puede tener mas de 3 partidas por equipo creadas al mismo tiempo"]);
         }
 
     }
