@@ -73,6 +73,7 @@ class InvitarController extends Controller
             $invitacion_amigo = new InvitacionesAmigos();
             $invitacion_amigo->id_invitador=$id_jugador->id_jugador;
             $invitacion_amigo->id_invitado=$request->get('id_invitado');
+            $invitacion_amigo->id_estatus=3;
 
             if(!DB::table('invitaciones_amigos')
                 ->where('id_invitador','=',$id_jugador->id_jugador)
