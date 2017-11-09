@@ -37,10 +37,18 @@ class PartidaController extends Controller
             ->select('id_jugador')
             ->where('api_token', '=', $api_token)
             ->first()->id_jugador;
+
         $nombre=trim($request->get('nombre'));
+
         $equipo=DB::table('equipo')
-            ->where('nombre', '=', $nombre)
             ->select('id_equipo','id_tipoequipo')
+            ->where('nombre', '=', $nombre)
+            ->first();
+
+        $creador_rango=DB::table('jugador_equipo')
+            ->select('id_rangoequipo')
+            ->where('id_jugador', '=', $creador)
+            ->where('id_equipo', '=', $equipo->id_equipo)
             ->first();
 
 
@@ -63,14 +71,19 @@ class PartidaController extends Controller
             ->where('id_estatus', '=', '1')
             ->count();
 
-        if($cantidad_partidas_creadas<=3){
-            if($partida->save()) {
-                return response()->json(['success' => true,"estado"=>"Partida creado exitosamente"]);
-            }else{
-                return response()->json(['success' => false,"estado"=>"No se pudo crear la partida"]);
+
+        if ($creador_rango==1 || $creador_rango==2) {
+            if ($cantidad_partidas_creadas < 3) {
+                if ($partida->save()) {
+                    return response()->json(['success' => true, "estado" => "Partida creado exitosamente"]);
+                } else {
+                    return response()->json(['success' => false, "estado" => "No se pudo crear la partida"]);
+                }
+            } else {
+                return response()->json(['success' => false, "estado" => "No se pudo crear la partida, no se puede tener mas de 3 partidas por equipo creadas al mismo tiempo"]);
             }
         }else{
-            return response()->json(['success' => false,"estado"=>"No se pudo crear la partida, no se puede tener mas de 3 partidas por equipo creadas al mismo tiempo"]);
+            return response()->json(['success' => false, "estado" =>"no posee el rango suficiente para crear una partida con el equipo: ".$nombre]);
         }
 
     }
