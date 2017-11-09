@@ -37,5 +37,9 @@ $app->post('invitar/jugador', 'InvitarController@invitar');
 
 $app->post('amigos/show', 'InfoJugadorController@amigosMostrar');
 
+$app->post('notificaciones/show', 'NotificacionesController@show');
+
+
+
 
 

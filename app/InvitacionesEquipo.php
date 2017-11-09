@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
-class Invitaciones extends Model implements AuthenticatableContract, AuthorizableContract
+class InvitacionesEquipo extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable, Authorizable;
     protected $table='invitaciones';

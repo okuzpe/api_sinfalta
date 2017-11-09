@@ -8,7 +8,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Invitaciones;
+use App\InvitacionesEquipo;
 use App\InvitacionesAmigos;
 use DB;
 use App\Http\Controllers\Controller;
@@ -37,7 +37,7 @@ class InvitarController extends Controller
                 ->where('jugador.api_token', '=', $request->get('api_token'))
                 ->first();
 
-            $existe_invitacion = Invitaciones::where('id_invitador', '=', $id_jugador->id_jugador)
+            $existe_invitacion = InvitacionesEquipo::where('id_invitador', '=', $id_jugador->id_jugador)
                 ->where('id_invitado', '=', Input::get('id_invitado'))
                 ->where('id_equipo', '=', Input::get('id_equipo'))
                 ->first();
@@ -49,7 +49,7 @@ class InvitarController extends Controller
                 if (!is_null($existe_invitacion)) {
                     return response()->json(['success' => true, "estado" => "Ya se ha invitado a este jugador al equipo."]);
                 } else {
-                    $invitacion = new Invitaciones();
+                    $invitacion = new InvitacionesEquipo();
                     $invitacion->id_invitador = $id_jugador->id_jugador;
                     $invitacion->id_invitado = $request->get('id_invitado');
                     $invitacion->id_equipo = $request->get('id_equipo');
