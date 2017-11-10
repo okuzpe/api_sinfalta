@@ -8,11 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
-class InvitacionesAmigos extends Model implements AuthenticatableContract, AuthorizableContract
+class Notificaion extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable, Authorizable;
-    protected $table='invitaciones_amigos';
-    protected $primaryKey='id_invitaciones_amigos';
+    protected $table='notificacion';
+    protected $primaryKey='id_notificacion';
+    public $timestamps = true;
 
     /**
      * The attributes that are mass assignable.
