@@ -107,13 +107,20 @@ class NotificacionesController extends Controller
 
 
 
-        $notificaciones_amigos = DB::table('notificaciones')
-            ->select('id_destino')
-            ->where('id_destino', '=', $jugador)
-            ->where('id_estatus', '=', 3)
+        $notificaciones = DB::table('notificaciones')
+            ->join('jugador','jugador.id_jugador','=','notificaciones.id_creador')
+            ->select('notificaciones.id_creador','jugador.nombre AS nombre_creador','notificaciones.id_destino',
+                'notificaciones.id_tipo_notificacion','notificaciones.created_at')
+            ->where('notificaciones.id_destino', '=', $jugador)
+            ->where('notificaciones.id_estatus', '=', 3)
+            ->orderBy('notificaciones.created_at', 'DESC')
             ->get();
 
-        return ;
+        if (count($notificaciones)>0){
+            return response()->json(['success' => true,'notificaciones'=>$notificaciones]);
+        }else{
+            return response()->json(['success' => false,'notificacion'=>"no tiene"]);
+        }
 
     }
 }
