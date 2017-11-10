@@ -29,22 +29,22 @@ class NotificacionesController extends Controller
                 ->first();
 
             $existe_invitacion =  DB::table('notificaciones')
-                ->where('id_invitador', '=', $id_jugador->id_jugador)
-                ->where('id_invitado', '=', Input::get('id_invitado'))
+                ->where('id_creador', '=', $id_jugador->id_jugador)
+                ->where('id_destino', '=', Input::get('id_destino'))
                 ->where('id_equipo', '=', Input::get('id_equipo'))
                 ->first();
 
 
             if ($id_jugador->id_rangoequipo == 1 or $id_jugador->id_rangoequipo == 2) {
-
-
                 if (!is_null($existe_invitacion)) {
                     return response()->json(['success' => true, "estado" => "En espera de que el jugador acepte la invitacion."]);
                 } else {
+
                     $notificacion = new Notificaion();
-                    $notificacion->id_invitador = $id_jugador->id_jugador;
-                    $notificacion->id_invitado = $request->get('id_invitado');
+                    $notificacion->id_creador = $id_jugador->id_jugador;
+                    $notificacion->id_destino = $request->get('id_destino');
                     $notificacion->id_equipo = $request->get('id_equipo');
+                    $notificacion->id_destino=$request->get('id_destino');
                     $notificacion->id_estatus = 3;
                     $notificacion->id_tipo_notificacion = 2;
                     if ($notificacion->save()) {
@@ -58,25 +58,24 @@ class NotificacionesController extends Controller
                 return response()->json(['success' => false, "estado" => "No tienes los privilegios para invitar"]);
             }
         }else{
-
             $id_jugador = DB::table('jugador')
                 ->select('id_jugador','nombre')
                 ->where('api_token', '=', $request->get('api_token'))
                 ->first();
             $notificacion_amigo = new Notificaion();
-            $notificacion_amigo->id_invitador=$id_jugador->id_jugador;
-            $notificacion_amigo->id_invitado=$request->get('id_invitado');
+            $notificacion_amigo->id_creador=$id_jugador->id_jugador;
+            $notificacion_amigo->id_destino=$request->get('id_destino');
             $notificacion_amigo->id_estatus=3;
             $notificacion_amigo->id_tipo_notificacion=1;
 
             if(DB::table('notificaciones')
-                ->where('id_invitador','=',$id_jugador->id_jugador)
-                ->where('id_invitado','=',$request->get('id_invitado'))
+                ->where('id_creador','=',$id_jugador->id_jugador)
+                ->where('id_destino','=',$request->get('id_destino'))
                 ->exists()){
 
                 if (!DB::table('amigos')
                     ->where('id_jugador','=',$id_jugador->id_jugador)
-                    ->where('id_amigo','=',$request->get('id_invitado'))
+                    ->where('id_amigo','=',$request->get('id_destino'))
                     ->exists()){
                     if ($notificacion_amigo->save()){
                         return response()->json(['success' => true, "estado" => "El jugador se ha invitado a tu lista de amigos"]);
@@ -96,10 +95,23 @@ class NotificacionesController extends Controller
     }
 
     public function show(Request $request){
-        $notificaciones = DB::table('jugador')
-            ->select('jugador.id_jugador', 'jugador_equipo.id_rangoequipo')
-            ->where('jugador.api_token', '=', $request->get('api_token'))
-            ->first();
+
+        $api_token=$request->get("api_token");
+
+        $jugador= DB::table('jugador')
+            ->select('id_jugador')
+            ->where('api_token', '=', $api_token)
+            ->first()->id_jugador;
+
+
+
+        $notificaciones_amigos = DB::table('notificaciones')
+            ->select('id_destino')
+            ->where('id_destino', '=', $jugador)
+            ->where('id_estatus', '=', 3)
+            ->get();
+
+        return ;
 
     }
 }
