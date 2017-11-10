@@ -11,7 +11,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 class Notificaion extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable, Authorizable;
-    protected $table='notificacion';
+    protected $table='notificaciones';
     protected $primaryKey='id_notificacion';
     public $timestamps = true;
 

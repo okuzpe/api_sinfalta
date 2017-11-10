@@ -3,13 +3,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Equipo;
-use App\JugadorEquipo;
+
 use App\Notificaion;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
-use JD\Cloudder\Facades\Cloudder;
 
 class NotificacionesController extends Controller
 {
@@ -30,7 +28,7 @@ class NotificacionesController extends Controller
                 ->where('jugador.api_token', '=', $request->get('api_token'))
                 ->first();
 
-            $existe_invitacion =  DB::table('notificacions')
+            $existe_invitacion =  DB::table('notificaciones')
                 ->where('id_invitador', '=', $id_jugador->id_jugador)
                 ->where('id_invitado', '=', Input::get('id_invitado'))
                 ->where('id_equipo', '=', Input::get('id_equipo'))
@@ -43,12 +41,13 @@ class NotificacionesController extends Controller
                 if (!is_null($existe_invitacion)) {
                     return response()->json(['success' => true, "estado" => "Ya se ha invitado a este jugador al equipo."]);
                 } else {
-                    $invitacion = new Notificaion();
-                    $invitacion->id_invitador = $id_jugador->id_jugador;
-                    $invitacion->id_invitado = $request->get('id_invitado');
-                    $invitacion->id_equipo = $request->get('id_equipo');
-                    $invitacion->id_estatus = 3;
-                    if ($invitacion->save()) {
+                    $notificacion = new Notificaion();
+                    $notificacion->id_invitador = $id_jugador->id_jugador;
+                    $notificacion->id_invitado = $request->get('id_invitado');
+                    $notificacion->id_equipo = $request->get('id_equipo');
+                    $notificacion->id_estatus = 3;
+                    $notificacion->id_tipo_notificacion = 2;
+                    if ($notificacion->save()) {
                         return response()->json(['success' => true, "estado" => "Jugador invitado."]);
                     } else {
                         return response()->json(['success' => false, "estado" => "Error inesperado"]);
@@ -64,10 +63,10 @@ class NotificacionesController extends Controller
                 ->select('id_jugador','nombre')
                 ->where('api_token', '=', $request->get('api_token'))
                 ->first();
-            $invitacion_amigo = new Notificaion();
-            $invitacion_amigo->id_invitador=$id_jugador->id_jugador;
-            $invitacion_amigo->id_invitado=$request->get('id_invitado');
-            $invitacion_amigo->id_estatus=3;
+            $notificacion_amigo = new Notificaion();
+            $notificacion_amigo->id_invitador=$id_jugador->id_jugador;
+            $notificacion_amigo->id_invitado=$request->get('id_invitado');
+            $notificacion_amigo->id_estatus=3;
 
             if(DB::table('notificaciones')
                 ->where('id_invitador','=',$id_jugador->id_jugador)
@@ -78,7 +77,7 @@ class NotificacionesController extends Controller
                     ->where('id_jugador','=',$id_jugador->id_jugador)
                     ->where('id_amigo','=',$request->get('id_invitado'))
                     ->exists()){
-                    if ($invitacion_amigo->save()){
+                    if ($notificacion_amigo->save()){
                         return response()->json(['success' => true, "estado" => "El jugador se ha invitado a tu lista de amigos"]);
 
                     }else{
