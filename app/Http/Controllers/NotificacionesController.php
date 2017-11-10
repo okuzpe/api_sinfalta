@@ -59,7 +59,7 @@ class NotificacionesController extends Controller
             }
         }else{
             $id_jugador = DB::table('jugador')
-                ->select('id_jugador','nombre')
+                ->select('id_jugador')
                 ->where('api_token', '=', $request->get('api_token'))
                 ->first();
             $notificacion_amigo = new Notificaion();
@@ -68,10 +68,12 @@ class NotificacionesController extends Controller
             $notificacion_amigo->id_estatus=3;
             $notificacion_amigo->id_tipo_notificacion=1;
 
-            if(DB::table('notificaciones')
+
+            $existe_notificacion=DB::table('notificaciones')
                 ->where('id_creador','=',$id_jugador->id_jugador)
                 ->where('id_destino','=',$request->get('id_destino'))
-                ->exists()){
+                ->count();
+            if($existe_notificacion>=0){
 
                 if (!DB::table('amigos')
                     ->where('id_jugador','=',$id_jugador->id_jugador)
@@ -89,7 +91,7 @@ class NotificacionesController extends Controller
                 }
             }else{
                 return response()->json(['success' => true, "estado" => "El jugador esta pendiente por aceptar la invitacion"]);
-
+//                return $existe_notificacion;
             }
         }
     }
