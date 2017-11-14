@@ -106,10 +106,9 @@ class NotificacionesController extends Controller
             ->first()->id_jugador;
 
 
-
         $notificaciones = DB::table('notificaciones')
             ->join('jugador','jugador.id_jugador','=','notificaciones.id_creador')
-            ->select('notificaciones.id_creador','jugador.nombre AS nombre_creador','notificaciones.id_destino',
+            ->select('notificaciones.id_notificacion','notificaciones.id_creador','jugador.nombre AS nombre_creador','notificaciones.id_destino',
                 'notificaciones.id_tipo_notificacion','notificaciones.created_at')
             ->where('notificaciones.id_destino', '=', $jugador)
             ->where('notificaciones.id_estatus', '=', 3)
@@ -121,6 +120,23 @@ class NotificacionesController extends Controller
         }else{
             return response()->json(['success' => false,'notificacion'=>"no tiene"]);
         }
+    }
+
+    public function cambiarEstado(Request $request){
+
+        $estatus=0;
+        $id_notificacion=$request->get("id_notificacion");
+        $aceptar=$request->get("aceptar");
+
+        if ($aceptar=true){
+            $estatus=4;
+        }else{
+            $estatus=5;
+        }
+
+        DB::table('notificaciones')
+            ->where('id_notificacion', $id_notificacion)
+            ->update(['id_estatus' => $estatus]);
 
     }
 }
