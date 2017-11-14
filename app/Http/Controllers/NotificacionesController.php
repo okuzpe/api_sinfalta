@@ -138,6 +138,6 @@ class NotificacionesController extends Controller
             ->where('id_notificacion', $id_notificacion)
             ->update(['id_estatus' => $estatus]);
 
-        response()->json(['success' => true]);
+        return response()->json(['success' => true]);
     }
 }
