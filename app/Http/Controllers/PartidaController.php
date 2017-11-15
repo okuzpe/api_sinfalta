@@ -26,9 +26,16 @@ class PartidaController extends Controller
             ->get();
 
         return response()->json(['partidas'=>$partidas,'success' => true]);
-
-
     }
+
+    public function showOne(Request $request)
+    {
+
+        $partida=Partida::findOrFail($request->get("id_partida"));
+
+        return response()->json(['partida'=>$partida,'success' => true]);
+    }
+
 
     public function create(Request $request)
     {

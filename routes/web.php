@@ -24,6 +24,7 @@ $app->post('user/login', 'LoginController@index');
 
 $app->post('partida/create', 'PartidaController@create');
 $app->post('partida/show', 'PartidaController@show');
+$app->post('partida/show/one', 'PartidaController@showOne');
 $app->post('partida/info_spinner', 'PartidaController@infoEquipos');
 
 $app->post('equipo/create', 'EquipoController@create');
