@@ -30,8 +30,13 @@ class PartidaController extends Controller
 
     public function showOne(Request $request)
     {
+        $id_partida=$request->get("id_partida");
 
-        $partida=Partida::findOrFail($request->get("id_partida"));
+        $partida=DB::table('partida')
+            ->join('equipo','partida.equipo_creador','=','equipo.id_equipo')
+            ->select('equipo.nombre','equipo.reputacion_positiva','reputacion_negativa','equipo.id_tipoequipo','partida.fechahora_inicio','partida.descripcion')
+            ->where('partida.id_partida','=',$id_partida)
+            ->get();
 
         return response()->json(['partida'=>$partida,'success' => true]);
     }
