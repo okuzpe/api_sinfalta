@@ -38,7 +38,7 @@ class PartidaController extends Controller
             ->where('partida.id_partida','=',$id_partida)
             ->get();
 
-        return response()->json(['partida'=>$partida,'success' => true]);
+        return response()->json(['success' => true,'partida'=>$partida]);
     }
 
 
