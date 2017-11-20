@@ -26,6 +26,7 @@ $app->post('partida/create', 'PartidaController@create');
 $app->post('partida/show', 'PartidaController@show');
 $app->post('partida/show/one', 'PartidaController@showOne');
 $app->post('partida/info_spinner', 'PartidaController@infoEquipos');
+$app->post('partida/aceptar', 'PartidaController@aceptarPartida');
 
 $app->post('equipo/create', 'EquipoController@create');
 $app->post('equipo/show', 'EquipoController@show');

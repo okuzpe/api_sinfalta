@@ -22,7 +22,7 @@ class PartidaController extends Controller
     {
         $partidas=DB::table('partida')
             ->where('id_estatus','=','1')
-            ->select('id_partida','latitud','longitud')
+            ->select('id_partida','latitud','longitud','id_tipopartida')
             ->get();
 
         return response()->json(['partidas'=>$partidas,'success' => true]);
@@ -120,5 +120,26 @@ class PartidaController extends Controller
             return response()->json(['success'=>false,'estado'=>'no tiene equipos','equipos'=>$equipos]);
         }
 
+    }
+
+    public function aceptarPartida(Request $request)
+    {
+        $id_partida = (int)$request->get("id_partida");
+
+        $equipo=DB::table('partida')
+            ->select('id_jugador')
+            ->where('api_token','=',1)
+            ->get();
+
+
+        $estado = DB::table('partida')
+            ->where('id_partida', '=', $id_partida)
+            ->update(['id_estatus' => 4]);
+
+        if ($estado) {
+            return response()->json(['success' => true, 'estado' => 'Partida aceptada, para mas informacion vea la seccion \' Mis  partidas \' ']);
+        }else{
+            return response()->json(['success' => false,'estado' => 'negativo procedimiento']);
+        }
     }
 }
