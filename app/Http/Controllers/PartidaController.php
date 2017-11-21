@@ -31,6 +31,7 @@ class PartidaController extends Controller
     public function showOne(Request $request)
     {
         $id_partida=(int)$request->get("id_partida");
+        $token=$request->get('api_token');
 
         $partida=DB::table('partida')
             ->join('equipo','partida.equipo_creador','=','equipo.id_equipo')
@@ -38,7 +39,20 @@ class PartidaController extends Controller
             ->where('partida.id_partida','=',$id_partida)
             ->first();
 
-        return response()->json(['success' => true,'partida'=>$partida]);
+        $jugador = DB::table('jugador')
+            ->select('id_jugador')
+            ->where('api_token','=',$token)
+            ->first();
+
+        $mis_equipos=DB::table('jugador_equipo')
+            ->where('jugador_equipo.id_rangoequipo','<','3')
+            ->where('jugador_equipo.id_jugador','=',$jugador->id_jugador)
+            ->join('equipo','jugador_equipo.id_equipo','=','equipo.id_equipo')
+            ->select('equipo.nombre','equipo.id_tipoequipo','jugador_equipo.id_rangoequipo')
+            ->get();
+
+
+        return response()->json(['success' => true,'partida'=>$partida,'mis_equipos'=>$mis_equipos]);
     }
 
 
