@@ -34,7 +34,7 @@ class PartidaController extends Controller
 
         $partida=DB::table('partida')
             ->join('equipo','partida.equipo_creador','=','equipo.id_equipo')
-            ->select('equipo.nombre','equipo.reputacion_positiva','reputacion_negativa','equipo.id_tipoequipo','partida.fechahora_inicio','partida.descripcion')
+            ->select('equipo.nombre','equipo.reputacion_positiva','reputacion_negativa','equipo.id_tipoequipo','partida.fechahora_inicio','partida.descripcion','partida.id_tipopartida')
             ->where('partida.id_partida','=',$id_partida)
             ->first();
 
@@ -111,7 +111,7 @@ class PartidaController extends Controller
         $equipos=DB::table('jugador_equipo')
             ->where('jugador_equipo.id_jugador','=',$jugador[0]->id_jugador)
             ->join('equipo','jugador_equipo.id_equipo','=','equipo.id_equipo')
-            ->select('equipo.nombre')
+            ->select('equipo.nombre','equipo.id_tipoequipo')
             ->get();
 
         if (!$equipos->isEmpty()){
