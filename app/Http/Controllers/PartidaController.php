@@ -139,7 +139,7 @@ class PartidaController extends Controller
     public function aceptarPartida(Request $request)
     {
         $id_partida = (int)$request->get("id_partida");
-        $nombre_equipo_retador = trim($request->get("equipo_retador"));
+        $nombre_equipo_retador = trim($request->get("nombre_equipo_retador"));
 
         $id_equiporetador = DB::table('equipo')
             ->select('id_equipo')
