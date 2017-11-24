@@ -146,6 +146,12 @@ class PartidaController extends Controller
             ->where('nombre', '=', $nombre_equipo_retador)
             ->first();
 
+
+        $id_equipo_creador= DB::table('partida')
+            ->select('id_creador')
+            ->where('id_partida', '=', $id_partida)
+            ->first();
+
 //        if ($id_partida != $id_equiporetador->id_equipo) {
 //
 //            $estado = DB::table('partida')
