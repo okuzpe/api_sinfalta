@@ -161,6 +161,6 @@ class PartidaController extends Controller
 //        }else{
 //            return response()->json(['success' => false, 'estado' => 'El equipo creador de la partida y con el que quieres retar son iguales. \n Seleciona otra equipo. ']);
 //        }
-        return response()->json(['estado' =>$id_equiporetador->id_equipo."= ".$id_partida ]);
+        return response()->json(['estado' =>true,'estado' =>$id_equiporetador->id_equipo."= ".$id_partida ]);
     }
 }
