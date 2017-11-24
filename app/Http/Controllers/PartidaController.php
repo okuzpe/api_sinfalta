@@ -148,14 +148,14 @@ class PartidaController extends Controller
 
 
 
-        if ($id_partida != $id_equiporetador->id_equipo) {
+        if ((int)$id_partida!=(int)$id_equiporetador->id_equipo) {
 
             $estado = DB::table('partida')
                 ->where('id_partida', '=', $id_partida)
                 ->update(['id_estatus' => 4, 'equipo_retador' => $id_equiporetador->id_equipo]);
 
             if ($estado) {
-                return response()->json(['success' => true, 'estado' => 'Partida aceptada, para mas informacion vea la seccion \' Mis  partidas \' ']);
+                return response()->json(['success' => true, 'estado' => 'Partida aceptada, para mas informacion vea la seccion: " Mis  partidas " ']);
             } else {
                 return response()->json(['success' => false, 'estado' => 'No se pudo retar este equipo']);
             }
