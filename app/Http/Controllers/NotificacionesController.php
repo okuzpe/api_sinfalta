@@ -118,7 +118,7 @@ class NotificacionesController extends Controller
         if (count($notificaciones)>0){
             return response()->json(['success' => true,'notificaciones'=>$notificaciones]);
         }else{
-            return response()->json(['success' => false,'notificacion'=>"no tiene"]);
+            return response()->json(['success' => false,'notificaciones'=>"no tiene"]);
         }
     }
 

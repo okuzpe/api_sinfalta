@@ -151,7 +151,7 @@ class PartidaController extends Controller
             ->update(['id_estatus' => 4]);
 
         if ($estado) {
-            return response()->json(['success' => true, 'estado' => 'Partida aceptada, para mas informacion vea la seccion \' Mis  partidas \' ']);
+            return response()->json(['success' => true, 'estado' => 'Partida aceptada, para mas informacion vea la seccion \'\' Mis  partidas \'\' ']);
         }else{
             return response()->json(['success' => false,'estado' => 'negativo procedimiento']);
         }
