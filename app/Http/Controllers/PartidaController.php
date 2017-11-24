@@ -146,21 +146,21 @@ class PartidaController extends Controller
             ->where('nombre', '=', $nombre_equipo_retador)
             ->first();
 
-        if ($id_partida != $id_equiporetador->id_equipo) {
-
-            $estado = DB::table('partida')
-                ->where('id_partida', '=', $id_partida)
-                ->update(['id_estatus' => 4, 'equipo_retador' => $id_equiporetador->id_equipo]);
-
-            if ($estado) {
-                return response()->json(['success' => true, 'estado' => 'Partida aceptada, para mas informacion vea la seccion: " Mis  partidas " ']);
-            } else {
-                return response()->json(['success' => false, 'estado' => 'No se pudo retar este equipo']);
-            }
-
-        }else{
-            return response()->json(['success' => false, 'estado' => 'El equipo creador de la partida y con el que quieres retar son iguales. \n Seleciona otra equipo. ']);
-        }
-//        return $id_equiporetador->id_equipo;
+//        if ($id_partida != $id_equiporetador->id_equipo) {
+//
+//            $estado = DB::table('partida')
+//                ->where('id_partida', '=', $id_partida)
+//                ->update(['id_estatus' => 4, 'equipo_retador' => $id_equiporetador->id_equipo]);
+//
+//            if ($estado) {
+//                return response()->json(['success' => true, 'estado' => 'Partida aceptada, para mas informacion vea la seccion: " Mis  partidas " ']);
+//            } else {
+//                return response()->json(['success' => false, 'estado' => 'No se pudo retar este equipo']);
+//            }
+//
+//        }else{
+//            return response()->json(['success' => false, 'estado' => 'El equipo creador de la partida y con el que quieres retar son iguales. \n Seleciona otra equipo. ']);
+//        }
+        return response()->json(['estado' =>$id_equiporetador->id_equipo."= ".$id_partida ]);
     }
 }
