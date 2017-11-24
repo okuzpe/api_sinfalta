@@ -138,7 +138,7 @@ class PartidaController extends Controller
 
     public function aceptarPartida(Request $request)
     {
-        $id_partida = (int)$request->get("id_partida");
+        $id_partida =$request->get("id_partida");
         $nombre_equipo_retador = trim($request->get("nombre_equipo_retador"));
 
         $id_equiporetador = DB::table('equipo')
@@ -146,9 +146,7 @@ class PartidaController extends Controller
             ->where('nombre', '=', $nombre_equipo_retador)
             ->first();
 
-
-
-        if ((int)$id_partida!==(int)$id_equiporetador->id_equipo) {
+        if ($id_partida != $id_equiporetador->id_equipo) {
 
             $estado = DB::table('partida')
                 ->where('id_partida', '=', $id_partida)
