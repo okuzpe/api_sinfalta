@@ -148,7 +148,7 @@ class PartidaController extends Controller
 
 
 
-        if ((int)$id_partida!=(int)$id_equiporetador->id_equipo) {
+        if ((int)$id_partida!==(int)$id_equiporetador->id_equipo) {
 
             $estado = DB::table('partida')
                 ->where('id_partida', '=', $id_partida)
