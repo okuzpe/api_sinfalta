@@ -151,22 +151,22 @@ class PartidaController extends Controller
             ->where('id_partida', '=', $id_partida)
             ->first();
 
-//        if ($id_equipo_creador->id_creador != $id_equipo_retador->id_equipo) {
+        if ($id_equipo_creador->equipo_creador != $id_equipo_retador->id_equipo) {
 
-//            $estado = DB::table('partida')
-//                ->where('id_partida', '=', $id_partida)
-//                ->where('id_estatus','=',1)
-//                ->update(['id_estatus' => 4, 'equipo_retador' => $id_equipo_retador->id_equipo]);
-//
-//            if ($estado) {
-//                return response()->json(['success' => true, 'estado' => 'Partida aceptada, para mas informacion vea la seccion: "Mis  partidas" ']);
-//            } else {
-//                return response()->json(['success' => false, 'estado' => 'No se pudo retar este equipo, debido a que ya lo retaron']);
-//            }
-//
-//        }else{
-//            return response()->json(['success' => false, 'estado' => 'El equipo creador de la partida y con el que quieres retar son iguales. Selecione otro equipo. ']);
-//        }
-        return response()->json(['success' =>true,'estado' =>$id_equipo_creador->id_creador."= ".$id_equipo_retador->id_equipo ]);
+            $estado = DB::table('partida')
+                ->where('id_partida', '=', $id_partida)
+                ->where('id_estatus','=',1)
+                ->update(['id_estatus' => 4, 'equipo_retador' => $id_equipo_retador->id_equipo]);
+
+            if ($estado) {
+                return response()->json(['success' => true, 'estado' => 'Partida aceptada, para mas informacion vea la seccion: "Mis  partidas" ']);
+            } else {
+                return response()->json(['success' => false, 'estado' => 'No se pudo retar este equipo, debido a que ya lo retaron']);
+            }
+
+        }else{
+            return response()->json(['success' => false, 'estado' => 'El equipo creador de la partida y con el que quieres retar son iguales. Selecione otro equipo. ']);
+        }
+//        return response()->json(['success' =>true,'estado' =>$id_equipo_creador->equipo_creador."= ".$id_equipo_retador->id_equipo ]);
     }
 }
