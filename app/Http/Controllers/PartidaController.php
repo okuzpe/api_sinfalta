@@ -131,7 +131,7 @@ class PartidaController extends Controller
         if (!$equipos->isEmpty()){
             return response()->json(['success'=>true,'estado'=>'tiene equipos','equipos'=>$equipos]);
         }else{
-            return response()->json(['success'=>false,'estado'=>'no tiene equipos','equipos'=>$equipos]);
+            return response()->json(['success'=>false,'estado'=>'Usted no esta en ningun equipo. ','equipos'=>$equipos]);
         }
 
     }
@@ -139,7 +139,7 @@ class PartidaController extends Controller
     public function aceptarPartida(Request $request)
     {
         $id_partida =$request->get("id_partida");
-        $nombre_equipo_retador = trim($request->get("nombre_equipo_retador"));
+        $nombre_equipo_retador = $request->get("nombre_equipo_retador");
 
         $id_equipo_retador = DB::table('equipo')
             ->select('id_equipo')
@@ -160,13 +160,13 @@ class PartidaController extends Controller
                 ->update(['id_estatus' => 4, 'equipo_retador' => $id_equipo_retador->id_equipo]);
 
             if ($estado) {
-                return response()->json(['success' => true, 'estado' => 'Partida aceptada, para mas informacion vea la seccion: " Mis  partidas " ']);
+                return response()->json(['success' => true, 'estado' => 'Partida aceptada, para mas informacion vea la seccion: "Mis  partidas" ']);
             } else {
                 return response()->json(['success' => false, 'estado' => 'No se pudo retar este equipo, debido a que ya lo retaron']);
             }
 
         }else{
-            return response()->json(['success' => false, 'estado' => 'El equipo creador de la partida y con el que quieres retar son iguales. Seleciona otra equipo. ']);
+            return response()->json(['success' => false, 'estado' => 'El equipo creador de la partida y con el que quieres retar son iguales. Selecione otro equipo. ']);
         }
 //        return response()->json(['success' =>true,'estado' =>$id_equiporetador->id_equipo."= ".$id_equipo_creador->id_creador ]);
     }
