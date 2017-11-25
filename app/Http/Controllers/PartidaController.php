@@ -162,11 +162,11 @@ class PartidaController extends Controller
             if ($estado) {
                 return response()->json(['success' => true, 'estado' => 'Partida aceptada, para mas informacion vea la seccion: " Mis  partidas " ']);
             } else {
-                return response()->json(['success' => false, 'estado' => 'No se pudo retar este equipo']);
+                return response()->json(['success' => false, 'estado' => 'No se pudo retar este equipo, debido a que ya lo retaron']);
             }
 
         }else{
-            return response()->json(['success' => false, 'estado' => 'El equipo creador de la partida y con el que quieres retar son iguales. \n Seleciona otra equipo. ']);
+            return response()->json(['success' => false, 'estado' => 'El equipo creador de la partida y con el que quieres retar son iguales. Seleciona otra equipo. ']);
         }
 //        return response()->json(['success' =>true,'estado' =>$id_equiporetador->id_equipo."= ".$id_equipo_creador->id_creador ]);
     }
