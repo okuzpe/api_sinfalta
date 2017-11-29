@@ -33,7 +33,8 @@ $app->post('equipo/show', 'EquipoController@show');
 
 $app->post('pantalla/carga', 'CargaController@index');
 
-$app->post('search/jugador', 'SearchController@equipo');
+$app->post('search/jugador', 'SearchController@jugador');
+$app->post('search/equipo', 'SearchController@equipo');
 
 $app->post('amigos/show', 'InfoJugadorController@amigosMostrar');
 

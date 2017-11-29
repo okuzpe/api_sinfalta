@@ -22,7 +22,7 @@ class SearchController extends Controller
 
     }
 
-    public function equipo(Request $request)
+    public function jugador(Request $request)
     {
         if ($request) {
             $query = trim($request->get('query'));
@@ -41,12 +41,29 @@ class SearchController extends Controller
     }
 
 
-    public function create(Request $request)
+    public function equipo(Request $request)
     {
+        if ($request) {
 
+            $token=$request->get('api_token');
+            $jugador = DB::table('jugador')
+                ->select('id_jugador')
+                ->where('api_token','=',$token)
+                ->first();
+
+            $query = trim($request->get('query'));
+            $equipos = DB::table('equipo')
+                ->join('jugador_equipo','jugador_equipo.id_equipo','=','equipo.id_equipo')
+                ->select('equipo.id_equipo','equipo.nombre','equipo.reputacion_positiva','equipo.reputacion_negativa')
+                ->where('equipo.nombre', 'LIKE', $query . '%')
+                ->where('jugador_equipo.id_jugador','<>',$jugador->id_jugador)
+                ->limit(10)
+                ->get();
+
+            return response()->json(['success' => true,'equipos' => $equipos]);
+        }else{
+            return response()->json(['success' => false]);
+        }
     }
 }
 
-    {
-
-}
