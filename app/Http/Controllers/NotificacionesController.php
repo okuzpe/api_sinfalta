@@ -96,24 +96,41 @@ class NotificacionesController extends Controller
         }
     }
 
-    public function show(Request $request){
+    public function show(Request $request)
+    {
 
-        $api_token=$request->get("api_token");
+        $api_token = $request->get("api_token");
 
-        $jugador= DB::table('jugador')
+        $jugador = DB::table('jugador')
             ->select('id_jugador')
             ->where('api_token', '=', $api_token)
             ->first()->id_jugador;
 
 
         $notificaciones = DB::table('notificaciones')
-            ->join('jugador','jugador.id_jugador','=','notificaciones.id_creador')
-            ->select('notificaciones.id_notificacion','notificaciones.id_creador','jugador.nombre AS nombre_creador','notificaciones.id_destino',
-                'notificaciones.id_tipo_notificacion','notificaciones.created_at')
+            ->join('jugador', 'jugador.id_jugador', '=', 'notificaciones.id_creador')
+            ->select('notificaciones.id_notificacion', 'notificaciones.id_creador', 'jugador.nombre AS nombre_creador', 'notificaciones.id_destino',
+                'notificaciones.id_tipo_notificacion', 'notificaciones.created_at', 'notificaciones.id_equipo')//,'equipo.nombre AS nombre_equipo'
             ->where('notificaciones.id_destino', '=', $jugador)
             ->where('notificaciones.id_estatus', '=', 3)
             ->orderBy('notificaciones.created_at', 'DESC')
             ->get();
+
+
+            $i = 0;
+            foreach ($notificaciones as $not) {
+                if ($notificaciones[$i]->id_equipo!=null){
+                $notificaciones[$i]->nombre_equipo = DB::table('equipo')
+                    ->where('id_equipo', '=', $notificaciones[$i]->id_equipo)
+                    ->select('nombre')
+                    ->first();
+
+                $i++;
+
+                }
+            }
+
+
 
         if (count($notificaciones)>0){
             return response()->json(['success' => true,'notificaciones'=>$notificaciones]);
@@ -139,5 +156,39 @@ class NotificacionesController extends Controller
             ->update(['id_estatus' => $estatus]);
 
         return response()->json(['success' => true]);
+    }
+
+
+    public function unirmeEquipo(Request $request)
+    {
+
+        $id_equipo=$request->get('id_equipo');
+        $token=$request->get('api_token');
+
+        $jugador = DB::table('jugador')
+            ->select('id_jugador')
+            ->where('api_token','=',$token)
+            ->first();
+
+
+
+
+        $notificacion = new Notificaion();
+        $notificacion->id_creador = $jugador->id_jugador;
+
+        $notificacion->id_destino =$id_equipo ;
+
+        $notificacion->id_equipo = $id_equipo;
+        $notificacion->id_tipo_notificacion = $id_equipo;
+
+        if ($notificacion->save()){
+            return response()->json(['success' => true, "estado" => "Se ha enviado la solicitud"]);
+        }else{
+            return response()->json(['success' => false, "estado" => "No se pudo enviar la solicitud"]);
+
+        }
+
+//        return response()->json($destino);
+
     }
 }

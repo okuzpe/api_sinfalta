@@ -41,6 +41,8 @@ $app->post('amigos/show', 'InfoJugadorController@amigosMostrar');
 $app->post('invitar/jugador', 'NotificacionesController@invitar');
 $app->post('notificaciones/show', 'NotificacionesController@show');
 $app->post('notificaciones/estado', 'NotificacionesController@cambiarEstado');
+$app->post('notificaciones/unirme/equipo', 'NotificacionesController@unirmeEquipo');
+
 
 
 
