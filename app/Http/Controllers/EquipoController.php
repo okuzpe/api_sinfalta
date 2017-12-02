@@ -101,4 +101,9 @@ class EquipoController extends Controller
 
     }
 
+    public function aceptarJugador(Request $request)
+    {
+
+    }
+
 }

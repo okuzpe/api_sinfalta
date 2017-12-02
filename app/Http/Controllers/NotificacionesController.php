@@ -170,16 +170,21 @@ class NotificacionesController extends Controller
             ->where('api_token','=',$token)
             ->first();
 
+        $id_destino=DB::table('jugador_equipo')
+            ->where('id_rangoequipo','=',1)
+            ->where('id_equipo','=',$id_equipo)
+            ->select('id_jugador')
+            ->first();
 
 
 
         $notificacion = new Notificaion();
         $notificacion->id_creador = $jugador->id_jugador;
 
-        $notificacion->id_destino =$id_equipo ;
+        $notificacion->id_destino =$id_destino ;
 
         $notificacion->id_equipo = $id_equipo;
-        $notificacion->id_tipo_notificacion = $id_equipo;
+        $notificacion->id_tipo_notificacion = 4;
 
         if ($notificacion->save()){
             return response()->json(['success' => true, "estado" => "Se ha enviado la solicitud"]);
@@ -188,7 +193,7 @@ class NotificacionesController extends Controller
 
         }
 
-//        return response()->json($destino);
+//        return response()->json($id_destino);
 
     }
 }
