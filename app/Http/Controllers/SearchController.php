@@ -53,10 +53,9 @@ class SearchController extends Controller
 
             $query = trim($request->get('query'));
             $equipos = DB::table('equipo')
-                ->join('jugador_equipo','jugador_equipo.id_equipo','=','equipo.id_equipo')
-                ->select('equipo.id_equipo','equipo.nombre','equipo.reputacion_positiva','equipo.reputacion_negativa')
+                ->select('id_equipo','nombre','reputacion_positiva','reputacion_negativa')
                 ->where('equipo.nombre', 'LIKE', $query . '%')
-                ->where('jugador_equipo.id_jugador','<>',$jugador->id_jugador)
+
                 ->limit(10)
                 ->get();
 
