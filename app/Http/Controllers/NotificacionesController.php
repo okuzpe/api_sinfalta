@@ -179,21 +179,22 @@ class NotificacionesController extends Controller
             ->first();
 
 
-        if (!count($check_esta_en_equipo) == 0) {
+        if (count($check_esta_en_equipo) == 0) {
             $id_destino = DB::table('jugador_equipo')
                 ->where('id_rangoequipo', '=', 1)
                 ->where('id_equipo', '=', $id_equipo)
                 ->select('id_jugador')
-                ->first();
+                ->get();
 
 
             $notificacion = new Notificaion();
             $notificacion->id_creador = $jugador->id_jugador;
 
-            $notificacion->id_destino = $id_destino;
+            $notificacion->id_destino = $id_destino[0]->id_jugador;
 
             $notificacion->id_equipo = $id_equipo;
             $notificacion->id_tipo_notificacion = 4;
+            $notificacion->id_estatus = 3;
 
             if ($notificacion->save()) {
                 return response()->json(['success' => true, "estado" => "Se ha enviado la solicitud"]);
@@ -205,5 +206,7 @@ class NotificacionesController extends Controller
         } else {
             return response()->json("Usted ya pertenece a este equipo");
         }
+
+//            return response()->json($id_destino[0]->id_jugador);
     }
 }
