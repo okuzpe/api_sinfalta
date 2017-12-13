@@ -165,7 +165,7 @@ class NotificacionesController extends Controller
                     break;
                 case 2:
                     $equipo=new JugadorEquipo();
-                    $equipo->id_jugador=$tipo_notificacion->id_creador;
+                    $equipo->id_jugador=$tipo_notificacion->id_destino;
                     $equipo->id_equipo=$tipo_notificacion->id_equipo;
                     $equipo->id_rangoequipo=3;
                     $equipo->save();
