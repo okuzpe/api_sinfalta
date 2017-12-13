@@ -4,6 +4,9 @@
 namespace App\Http\Controllers;
 
 
+use App\amigos;
+use App\Equipo;
+use App\JugadorEquipo;
 use App\Notificaion;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -143,23 +146,65 @@ class NotificacionesController extends Controller
     public function cambiarEstado(Request $request)
     {
 
-        $estatus = 0;
+        $aceptar=$request->get("aceptar");
         $id_notificacion = $request->get("id_notificacion");
-        $aceptar = $request->get("aceptar");
 
-        if ($aceptar = true) {
+        $tipo_notificacion=DB::table('notificaciones')
+            ->select('id_tipo_notificacion','id_creador','id_destino','id_equipo')
+            ->where('id_notificacion','=',$id_notificacion)
+            ->first();
+
+
+        if ($aceptar == true) {
+            switch ($tipo_notificacion->id_tipo_notificacion) {
+                case 1:
+                    $amigo=new Amigos();
+                    $amigo->id_jugador=$tipo_notificacion->id_creador;
+                    $amigo->id_amigo=$tipo_notificacion->id_destino;
+                    $amigo->save();
+                    break;
+                case 2:
+                    $equipo=new JugadorEquipo();
+                    $equipo->id_jugador=$tipo_notificacion->id_destino;
+                    $equipo->id_equipo=$tipo_notificacion->id_equipo;
+                    $equipo->id_rangoequipo=3;
+                    $equipo->save();
+                    break;
+                case 3:
+                    echo "i es igual a 2";
+                    break;
+                case 4:
+                    $equipo=new JugadorEquipo();
+                    $equipo->id_jugador=$tipo_notificacion->id_destino;
+                    $equipo->id_equipo=$tipo_notificacion->id_creador;
+                    $equipo->id_rangoequipo=3;
+                    $equipo->save();
+                    break;
+            }
+
             $estatus = 4;
-        } else {
-            $estatus = 5;
-        }
-
         DB::table('notificaciones')
             ->where('id_notificacion', $id_notificacion)
             ->update(['id_estatus' => $estatus]);
 
-        return response()->json(['success' => true]);
+            return response()->json(['success' => true]);
+        } else {
+            $estatus = 5;
+            if(DB::table('notificaciones')
+                ->where('id_notificacion', $id_notificacion)
+                ->update(['id_estatus' => $estatus])){
+                return response()->json(['success' => true]);
+            }
+        }
+
+//        return response()->json(['success' => true]);
+
+//        return response()->json($tipo_notificacion->id_tipo_notificacion);
     }
 
+//    private function tipo_not($valor){
+//
+//    }
 
     public function unirmeEquipo(Request $request)
     {
@@ -172,35 +217,46 @@ class NotificacionesController extends Controller
             ->where('api_token', '=', $token)
             ->first();
 
-        $check_esta_en_equipo = DB::table('jugador_equipo')
+        $check_esta_en_el_equipo = DB::table('jugador_equipo')
             ->select('id_jugador')
             ->where('id_equipo', '=', $id_equipo)
             ->where('id_jugador', '=', $jugador->id_jugador)
             ->first();
 
 
-        if (count($check_esta_en_equipo) == 0) {
+        if (count($check_esta_en_el_equipo) == 0) {
             $id_destino = DB::table('jugador_equipo')
                 ->where('id_rangoequipo', '=', 1)
                 ->where('id_equipo', '=', $id_equipo)
                 ->select('id_jugador')
                 ->get();
 
+            $notificacion_existe = DB::table('notificaciones')
+                ->where('id_creador', '=', $jugador->id_jugador)
+                ->where('id_destino', '=',  $id_destino[0]->id_jugador)
+                ->where('id_tipo_notificacion','=',4)
+                ->get();
 
-            $notificacion = new Notificaion();
-            $notificacion->id_creador = $jugador->id_jugador;
+            if (count($notificacion_existe) == 0) {
 
-            $notificacion->id_destino = $id_destino[0]->id_jugador;
 
-            $notificacion->id_equipo = $id_equipo;
-            $notificacion->id_tipo_notificacion = 4;
-            $notificacion->id_estatus = 3;
+                $notificacion = new Notificaion();
+                $notificacion->id_creador = $jugador->id_jugador;
 
-            if ($notificacion->save()) {
-                return response()->json(['success' => true, "estado" => "Se ha enviado la solicitud"]);
-            } else {
-                return response()->json(['success' => false, "estado" => "No se pudo enviar la solicitud"]);
+                $notificacion->id_destino = $id_destino[0]->id_jugador;
 
+                $notificacion->id_equipo = $id_equipo;
+                $notificacion->id_tipo_notificacion = 4;
+                $notificacion->id_estatus = 3;
+
+                if ($notificacion->save()) {
+                    return response()->json(['success' => true, "estado" => "Se ha enviado la solicitud"]);
+                } else {
+                    return response()->json(['success' => false, "estado" => "No se pudo enviar la solicitud"]);
+
+                }
+            }else{
+                return response()->json(['success' => true, "estado" => "En espera a que acepten tu solicitud"]);
             }
 
         } else {
