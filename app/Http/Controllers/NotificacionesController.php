@@ -159,13 +159,13 @@ class NotificacionesController extends Controller
             switch ($tipo_notificacion->id_tipo_notificacion) {
                 case 1:
                     $amigo=new Amigos();
-                    $amigo->id_jugador=$tipo_notificacion->id_creador;
-                    $amigo->id_amigo=$tipo_notificacion->id_destino;
+                    $amigo->id_jugador=$tipo_notificacion->id_destino;
+                    $amigo->id_amigo=$tipo_notificacion->id_creador;
                     $amigo->save();
                     break;
                 case 2:
                     $equipo=new JugadorEquipo();
-                    $equipo->id_jugador=$tipo_notificacion->id_destino;
+                    $equipo->id_jugador=$tipo_notificacion->id_creador;
                     $equipo->id_equipo=$tipo_notificacion->id_equipo;
                     $equipo->id_rangoequipo=3;
                     $equipo->save();
