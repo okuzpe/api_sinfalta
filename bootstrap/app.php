@@ -26,6 +26,7 @@ $app = new Laravel\Lumen\Application(
 $app->withFacades();
 $app->withEloquent();
 $app->configure('database');
+$app->configure('cors');
 
 /*
 |--------------------------------------------------------------------------
@@ -59,9 +60,9 @@ $app->singleton(
 |
 */
 
-// $app->middleware([
-//    App\Http\Middleware\ExampleMiddleware::class
-// ]);
+ $app->middleware([
+     \Barryvdh\Cors\HandleCors::class,
+ ]);
 
  $app->routeMiddleware([
      'auth' => App\Http\Middleware\Authenticate::class,
@@ -82,6 +83,8 @@ $app->singleton(
 $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(JD\Cloudder\CloudderServiceProvider::class);
 $app->register(JD\Cloudder\Facades\Cloudder::class);
+$app->register(Barryvdh\Cors\ServiceProvider::class);
+
 
 //$app->register(App\Providers\EventServiceProvider::class);
 
