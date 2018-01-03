@@ -103,19 +103,29 @@ class EquipoController extends Controller
 
     public function loadSetting(Request $request)
     {
-        $token=$request->get('api_token');
         $id_equipo=$request->get('id_equipo');
+        $token=$request->get('api_token');
+
+        $id_jugador=DB::table('jugador')
+            ->where('api_token', '=', $token)
+            ->select('id_jugador')
+            ->first();
+
+
 
         $datosEquipo=DB::table('equipo')
             ->where('id_equipo', '=', $id_equipo)
             ->select('nombre','lugar','descripcion')
+            ->first();
+
+        $jugadores = DB::table('jugador_equipo')
+            ->join('jugador','jugador_equipo.id_jugador','=','jugador.id_jugador')
+            ->select('jugador_equipo.id_jugador', 'jugador_equipo.id_rangoequipo','jugador.nombre','jugador.tiene_imagen')
+            ->where('jugador_equipo.id_equipo', '=', $id_equipo)
+            ->where('jugador.id_jugador', '<>', $id_jugador->id_jugador)
             ->get();
 
-        $jugadores=DB::table('jugador_equipo')
-            ->where('id_equipo', '=', $id_equipo)
-            ->get();
-
-        return response()->json(['success'=>true,'datos_equipo'=>$datosEquipo,'jugadores'=>$jugadores]);
+        return response()->json(['success'=>true,'datos_equipo'=>$datosEquipo,'jugadores'=>$jugadores,'id_jugador'=>$id_jugador->id_jugador]);
     }
 
 }
