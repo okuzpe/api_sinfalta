@@ -103,7 +103,19 @@ class EquipoController extends Controller
 
     public function aceptarJugador(Request $request)
     {
+        $token=$request->get('api_token');
+        $id_equipo=$request->get('id_equipo');
 
+        $datosEquipo=DB::table('equipo')
+            ->where('id_equipo', '=', $id_equipo)
+            ->select('nombre','lugar','descripcion')
+            ->get();
+
+        $jugadores=DB::table('jugador_equipo')
+            ->where('id_equipo', '=', $id_equipo)
+            ->get();
+
+        return response()->json(['success'=>true,'datos_equipo'=>$datosEquipo,'jugadores'=>$jugadores]);
     }
 
 }
