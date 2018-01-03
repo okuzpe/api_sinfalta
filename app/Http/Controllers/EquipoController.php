@@ -101,7 +101,7 @@ class EquipoController extends Controller
 
     }
 
-    public function aceptarJugador(Request $request)
+    public function loadSetting(Request $request)
     {
         $token=$request->get('api_token');
         $id_equipo=$request->get('id_equipo');
