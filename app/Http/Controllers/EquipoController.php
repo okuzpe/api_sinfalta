@@ -144,6 +144,9 @@ class EquipoController extends Controller
             ->where('id_equipo', '=', $id_equipo)
             ->where('id_jugador', '=', $id_jugador)
             ->delete();
+        if ($delete){
+            return response()->json(['success'=>true]) ;
+        }
 
     }
 
