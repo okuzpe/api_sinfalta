@@ -125,7 +125,26 @@ class EquipoController extends Controller
             ->where('jugador.id_jugador', '<>', $id_jugador->id_jugador)
             ->get();
 
-        return response()->json(['success'=>true,'datos_equipo'=>$datosEquipo,'jugadores'=>$jugadores,'id_jugador'=>$id_jugador->id_jugador]);
+        if ($jugadores!=null && $datosEquipo!=null && $id_jugador!=null){
+            return response()->json(['success'=>true,'datos_equipo'=>$datosEquipo,'jugadores'=>$jugadores,'id_jugador'=>$id_jugador->id_jugador]);
+
+        }else{
+            return response()->json(['success'=>true]) ;
+        }
+
+    }
+
+    public function deleteJugador(Request $request){
+        $id_equipo=$request->get('id_equipo');
+        $id_jugador=$request->get('id_jugador');
+        $token=$request->get('api_token');
+
+
+        $delete=DB::table('jugador_equipo')
+            ->where('id_equipo', '=', $id_equipo)
+            ->where('id_jugador', '=', $id_jugador)
+            ->delete();
+
     }
 
 }
