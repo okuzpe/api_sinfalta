@@ -146,8 +146,32 @@ class EquipoController extends Controller
             ->delete();
         if ($delete){
             return response()->json(['success'=>true]) ;
+        }else{
+            return response()->json(['success'=>false]) ;
         }
 
+    }
+
+    public function showOne(Request $request){
+        $token=$request->get('api_token');
+        $id_equipo=$request->get('id_equipo');
+
+        $equipo= DB::table('equipo')
+            ->where('id_equipo', '=', $id_equipo)
+            ->select('id_equipo','nombre')
+            ->first();
+
+        $jugadores_equipo=DB::table('jugador_equipo')
+            ->where('id_equipo', '=', $id_equipo)
+            ->join('jugador','jugador.id_jugador','=','jugador_equipo.id_jugador')
+            ->select('jugador.id_jugador','jugador.nombre','jugador_equipo.id_rangoequipo','jugador.tiene_imagen')
+            ->get();
+
+        if ($equipo && $jugadores_equipo){
+            return response()->json(['success'=>true,'equipo'=>$equipo,'jugadores_equipo'=>$jugadores_equipo]) ;
+        }else{
+            return response()->json(['success'=>false]) ;
+        }
     }
 
 }
