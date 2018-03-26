@@ -174,4 +174,27 @@ class EquipoController extends Controller
         }
     }
 
+    public function editFoto(Request $request)
+    {
+        $imagenCreada=false;
+
+            $equipo = new Equipo;
+
+            $file= $request->get('img_equipo');
+            $equipo->nombre = $request->get('nombre');
+
+            $publicId="fotoEquipo".$equipo->nombre;
+            if ($file) {
+                if(Cloudder::upload("data:image/png;base64," . $file, $publicId, array("width" => 250, "height" => 250))){
+                    $imagenCreada=true;
+                    $equipo->tiene_imagen=1;
+                    return response()->json(['success' => true,'img_guardada'=>$imagenCreada]);
+                }else{
+                    return response()->json(['success' => false,'img_guardada'=>$imagenCreada]);
+                }
+            }else{
+                return response()->json(['success' => false,'img_guardada'=>$imagenCreada]);
+            }
+    }
+
 }

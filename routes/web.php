@@ -33,6 +33,7 @@ $app->post('equipo/show', 'EquipoController@show');
 $app->post('equipo/setting', 'EquipoController@loadSetting');
 $app->post('equipo/jugador/delete', 'EquipoController@deleteJugador');
 $app->post('equipo/show/one', 'EquipoController@showOne');
+$app->post('equipo/edit/foto', 'EquipoController@editFoto');
 
 $app->post('pantalla/carga', 'CargaController@index');
 
