@@ -180,7 +180,7 @@ class EquipoController extends Controller
 
             $equipo = new Equipo;
 
-            $file= $request->get('img_equipo');
+            $file= $request->get('img');
             $equipo->nombre = $request->get('nombre');
 
             $publicId="fotoEquipo".$equipo->nombre;
