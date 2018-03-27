@@ -200,7 +200,7 @@ class EquipoController extends Controller
 
 
         $dato= $request->get('dato');
-        $id_dato = $request->get('id_dato');
+        $id_dato =(int) $request->get('id_dato');
         $id_equipo=$request->get('id_equipo');
 
         if ($id_dato==1) {
