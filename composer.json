@@ -25,7 +25,8 @@
         "classmap": [
             "tests/",
             "database/"
-        ]
+        ],
+        "files" : ["app/Helper.php"]
     },
     "scripts": {
         "post-root-package-install": [

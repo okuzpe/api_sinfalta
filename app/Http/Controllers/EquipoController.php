@@ -178,12 +178,11 @@ class EquipoController extends Controller
     {
         $imagenCreada=false;
 
-            $equipo = new Equipo;
 
             $file= $request->get('img');
-            $equipo->nombre = $request->get('nombre');
+            $nombre = $request->get('nombre');
 
-            $publicId="fotoEquipo".$equipo->nombre;
+            $publicId="fotoEquipo".$nombre;
             if ($file) {
                 if(Cloudder::upload("data:image/png;base64," . $file, $publicId, array("width" => 250, "height" => 250))){
                     return response()->json(['success' => true,'img_guardada'=>$imagenCreada]);
@@ -193,6 +192,31 @@ class EquipoController extends Controller
             }else{
                 return response()->json(['success' => false,'img_guardada'=>$imagenCreada]);
             }
+    }
+
+    public function editDatos(Request $request)
+    {
+
+
+
+        $dato= $request->get('dato');
+        $id_dato = $request->get('id_dato');
+        $id_equipo=$request->get('id_equipo');
+
+        if ($id_dato==1) {
+            cambiarDatosEquipo('nombre',$dato,$id_equipo);
+            return response()->json(['success' => true,'respuesta'=>'Nombre del equipo cambiado a '.$dato]);
+        }else if ($id_dato==2){
+            cambiarDatosEquipo('lugar',$dato,$id_equipo);
+            return response()->json(['success' => true,'respuesta'=>'Lugar del equipo cambiado a '.$dato]);
+        }else if ($id_dato==3){
+            cambiarDatosEquipo('descripcion',$dato,$id_equipo);
+            return response()->json(['success' => true,'respuesta'=>'Descripcion del equipo cambiada a '.$dato]);
+        }else{
+            return response()->json(['success' => false,'respuesta'=>'Error, no se pudo cambiar el dato a '.$dato]);
+        }
+
+
     }
 
 }
