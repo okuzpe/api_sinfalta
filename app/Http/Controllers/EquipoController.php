@@ -20,7 +20,7 @@ class EquipoController extends Controller
 
     public function __construct()
     {
-//        $this->middleware('auth');
+        $this->middleware('auth');
     }
 
     public function create(Request $request)
@@ -201,13 +201,13 @@ class EquipoController extends Controller
         $id_equipo=$request->get('id_equipo');
 
         if ((int)$id_dato==1) {
-            cambiarDatosEquipo('nombre',$dato,$id_equipo);
+//            cambiarDatosEquipo('nombre',$dato,$id_equipo);
             return response()->json(['success' => true,'respuesta'=>'Nombre del equipo cambiado a '.$dato]);
         }else if ($id_dato==2){
-            cambiarDatosEquipo('lugar',$dato,$id_equipo);
+//            cambiarDatosEquipo('lugar',$dato,$id_equipo);
             return response()->json(['success' => true,'respuesta'=>'Lugar del equipo cambiado a '.$dato]);
         }else if ($id_dato==3){
-            cambiarDatosEquipo('descripcion',$dato,$id_equipo);
+//            cambiarDatosEquipo('descripcion',$dato,$id_equipo);
             return response()->json(['success' => true,'respuesta'=>'Descripcion del equipo cambiada a '.$dato]);
         }else{
             return response()->json(['success' => false,'respuesta'=>'Error, no se pudo cambiar el dato a '.$dato]);
