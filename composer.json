@@ -20,13 +20,16 @@
         "psr-4": {
             "App\\": "app/"
         }
+
+
     },
     "autoload-dev": {
         "classmap": [
             "tests/",
             "database/"
         ],
-        "files" : ["app/Helper.php"]
+        "files" : ["app/Libraries/Helpers.php"]
+
     },
     "scripts": {
         "post-root-package-install": [

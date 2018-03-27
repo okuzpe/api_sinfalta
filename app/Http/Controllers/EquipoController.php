@@ -14,6 +14,7 @@ use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use JD\Cloudder\Facades\Cloudder;
+use Helpers;
 
 class EquipoController extends Controller
 {
