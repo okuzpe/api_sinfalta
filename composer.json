@@ -27,8 +27,8 @@
         "classmap": [
             "tests/",
             "database/"
-        ],
-        "files" : ["app/Libraries/Helpers.php"]
+        ]
+
 
     },
     "scripts": {

@@ -202,13 +202,19 @@ class EquipoController extends Controller
         $id_equipo=$request->get('id_equipo');
 
         if ((int)$id_dato==1) {
-            cambiarDatosEquipo('nombre',$dato,$id_equipo);
+            $hecho=DB::table('equipo')
+                ->where('id_equipo', '=', $id_equipo)
+                ->update(['nombre' => $dato]);
             return response()->json(['success' => true,'respuesta'=>'Nombre del equipo cambiado a '.$dato]);
         }else if ($id_dato==2){
-            cambiarDatosEquipo('lugar',$dato,$id_equipo);
+            $hecho=DB::table('equipo')
+                ->where('id_equipo', '=', $id_equipo)
+                ->update(['lugar' => $dato]);
             return response()->json(['success' => true,'respuesta'=>'Lugar del equipo cambiado a '.$dato]);
         }else if ($id_dato==3){
-            cambiarDatosEquipo('descripcion',$dato,$id_equipo);
+            $hecho=DB::table('equipo')
+                ->where('id_equipo', '=', $id_equipo)
+                ->update(['descripcion' => $dato]);
             return response()->json(['success' => true,'respuesta'=>'Descripcion del equipo cambiada a '.$dato]);
         }else{
             return response()->json(['success' => false,'respuesta'=>'Error, no se pudo cambiar el dato a '.$dato]);
