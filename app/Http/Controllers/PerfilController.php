@@ -38,7 +38,7 @@ class PerfilController extends Controller
                 ->first();
         }else{
             $show = DB::table('jugador')
-                ->select('apodo', 'altura', 'pie_dominante', 'peso','id_jugador', 'tiene_imagen')
+                ->select('id_jugador','apodo', 'altura', 'pie_dominante', 'peso','id_jugador', 'tiene_imagen')
                 ->where('id_jugador', '=', $request->get("id_buscar"))
                 ->first();
         }
