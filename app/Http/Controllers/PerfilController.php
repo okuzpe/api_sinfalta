@@ -38,7 +38,7 @@ class PerfilController extends Controller
                 ->first();
         }else{
             $show = DB::table('jugador')
-                ->select('id_jugador','apodo', 'altura', 'pie_dominante', 'peso','id_jugador', 'tiene_imagen')
+                ->select('apodo', 'altura', 'pie_dominante', 'peso','id_jugador', 'tiene_imagen')
                 ->where('id_jugador', '=', $request->get("id_buscar"))
                 ->first();
         }
@@ -83,7 +83,7 @@ class PerfilController extends Controller
                 $show->estadisticas=[$estadisticas,$estadisticas2];
             }
 
-            $URL_PERFIL="https://res.cloudinary.com/hmb2xri8f/image/upload/fotoPerfil$id_jugador";
+            $URL_PERFIL="https://res.cloudinary.com/hmb2xri8f/image/upload/fotoPerfil$id_jugador.png";
             return response()->json(['datos' => $show, 'success' => true,'url_perfil'=>$URL_PERFIL,'tiene_img'=>$img_jugador]);     //,'url_perfil'=>$URL_PERFIL]
         }
     }
