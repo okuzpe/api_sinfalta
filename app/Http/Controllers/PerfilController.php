@@ -33,12 +33,12 @@ class PerfilController extends Controller
 
         if(!$buscar_otro>0){
             $show = DB::table('jugador')
-                ->select('token','apodo', 'altura', 'pie_dominante', 'peso','id_jugador', 'tiene_imagen')
+                ->select('api_token','apodo', 'altura', 'pie_dominante', 'peso','id_jugador', 'tiene_imagen')
                 ->where('api_token', '=', $request->get('api_token'))
                 ->first();
         }else{
             $show = DB::table('jugador')
-                ->select('token','apodo', 'altura', 'pie_dominante', 'peso','id_jugador', 'tiene_imagen')
+                ->select('api_token','apodo', 'altura', 'pie_dominante', 'peso','id_jugador', 'tiene_imagen')
                 ->where('id_jugador', '=', $request->get("id_buscar"))
                 ->first();
         }
