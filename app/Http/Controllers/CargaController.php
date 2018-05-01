@@ -45,7 +45,7 @@ class CargaController extends Controller
 
         }else{
             return response()->json(['tiene_imagen'=>$tiene_imagen,'success' => true,'tiene_equipo'=>false,
-                'img_url'=>"https://res.cloudinary.com/hmb2xri8f/image/upload/fotoPerfil".$jugador[0]->id_jugador
+                'img_url'=>"https://res.cloudinary.com/hmb2xri8f/image/upload/fotoPerfil".$jugador[0]->id_jugador.".png"
             ]);
         }
 //
