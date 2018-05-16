@@ -169,11 +169,7 @@ class NotificacionesController extends Controller
                     $equipo->save();
                     break;
                 case 3:
-//                    $notificacion->id_creador = $equipo->id_equipo; //fino-> id_equipo a creador de la partida
-//                    $notificacion->id_destino = $jugador_id_jugador->id_jugador;//fino-> id del capitan de equipo
-//                    $notificacion->id_equipo = $id_equipo_retar;//fino-> id_equipo a retar en la partida
-
-                    $hecho=DB::table('partida')
+                    DB::table('partida')
                         ->where('id_partida', '=', $notificacion->id_partida)
                         ->update(['equipo_retador' => $notificacion->id_equipo]);
 
