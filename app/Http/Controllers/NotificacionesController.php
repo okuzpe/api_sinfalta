@@ -174,7 +174,7 @@ class NotificacionesController extends Controller
 //                    $notificacion->id_equipo = $id_equipo_retar;//fino-> id_equipo a retar en la partida
 
                     $hecho=DB::table('partida')
-                        ->where('id_equipo', '=', $notificacion->id_creador)
+                        ->where('id_partida', '=', $notificacion->id_partida)
                         ->update(['equipo_retador' => $notificacion->id_equipo]);
 
                     break;

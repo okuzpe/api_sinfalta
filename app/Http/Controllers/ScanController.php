@@ -55,7 +55,7 @@ class ScanController extends Controller
         $partida->descripcion = $request->get('descripcion');
         $partida->fechahora_inicio = $date;
         $partida->equipo_creador = $equipo->id_equipo;
-        $partida->equipo_retador=$id_equipo_retar;
+//        $partida->equipo_retador=$id_equipo_retar;
 
         $existe_partida=DB::table('partida')
             ->where('equipo_creador', '=', $equipo->id_equipo)
@@ -75,6 +75,7 @@ class ScanController extends Controller
                     if ($partida->save()) {
 
                         $notificacion = new Notificaion();
+                        $notificacion->id_partida=$partida->id_partida;
                         $notificacion->id_creador = $equipo->id_equipo; //fino-> id_equipo a creador de la partida
                         $notificacion->id_destino = $jugador_id_jugador->id_jugador;//fino-> id del capitan de equipo
                         $notificacion->id_equipo = $id_equipo_retar;//fino-> id_equipo a retar en la partida
