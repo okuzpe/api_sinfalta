@@ -59,12 +59,12 @@ class PartidaController extends Controller
     public function create(Request $request)
     {
         $api_token = trim($request->get('api_token'));
+        $nombre=trim($request->get('nombre'));
+
         $creador= DB::table('jugador')
             ->select('id_jugador')
             ->where('api_token', '=', $api_token)
             ->first()->id_jugador;
-
-        $nombre=trim($request->get('nombre'));
 
         $equipo=DB::table('equipo')
             ->select('id_equipo','id_tipoequipo')

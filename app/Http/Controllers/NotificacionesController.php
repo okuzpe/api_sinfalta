@@ -129,9 +129,7 @@ class NotificacionesController extends Controller
                     ->where('id_equipo', '=', $notificaciones[$i]->id_equipo)
                     ->select('nombre')
                     ->first();
-
                 $i++;
-
             }
         }
 
@@ -149,41 +147,48 @@ class NotificacionesController extends Controller
         $aceptar=$request->get("aceptar");
         $id_notificacion = $request->get("id_notificacion");
 
-        $tipo_notificacion=DB::table('notificaciones')
+        $notificacion=DB::table('notificaciones')
             ->select('id_tipo_notificacion','id_creador','id_destino','id_equipo')
             ->where('id_notificacion','=',$id_notificacion)
             ->first();
 
 
         if ($aceptar == true) {
-            switch ($tipo_notificacion->id_tipo_notificacion) {
+            switch ($notificacion->id_tipo_notificacion) {
                 case 1:
                     $amigo=new Amigos();
-                    $amigo->id_jugador=$tipo_notificacion->id_destino;
-                    $amigo->id_amigo=$tipo_notificacion->id_creador;
+                    $amigo->id_jugador=$notificacion->id_destino;
+                    $amigo->id_amigo=$notificacion->id_creador;
                     $amigo->save();
                     break;
                 case 2:
                     $equipo=new JugadorEquipo();
-                    $equipo->id_jugador=$tipo_notificacion->id_destino;
-                    $equipo->id_equipo=$tipo_notificacion->id_equipo;
+                    $equipo->id_jugador=$notificacion->id_destino;
+                    $equipo->id_equipo=$notificacion->id_equipo;
                     $equipo->id_rangoequipo=3;
                     $equipo->save();
                     break;
                 case 3:
-                    echo "i es igual a 2";
+//                    $notificacion->id_creador = $equipo->id_equipo; //fino-> id_equipo a creador de la partida
+//                    $notificacion->id_destino = $jugador_id_jugador->id_jugador;//fino-> id del capitan de equipo
+//                    $notificacion->id_equipo = $id_equipo_retar;//fino-> id_equipo a retar en la partida
+
+                    $hecho=DB::table('partida')
+                        ->where('id_equipo', '=', $notificacion->id_creador)
+                        ->update(['equipo_retador' => $notificacion->id_equipo]);
+
                     break;
                 case 4:
                     $equipo=new JugadorEquipo();
-                    $equipo->id_jugador=$tipo_notificacion->id_creador;
-                    $equipo->id_equipo=$tipo_notificacion->id_equipo;
+                    $equipo->id_jugador=$notificacion->id_creador;
+                    $equipo->id_equipo=$notificacion->id_equipo;
                     $equipo->id_rangoequipo=3;
                     $equipo->save();
                     break;
             }
 
             $estatus = 4;
-        DB::table('notificaciones')
+            DB::table('notificaciones')
             ->where('id_notificacion', $id_notificacion)
             ->update(['id_estatus' => $estatus]);
 
@@ -199,7 +204,7 @@ class NotificacionesController extends Controller
 
 //        return response()->json(['success' => true]);
 
-//        return response()->json($tipo_notificacion->id_tipo_notificacion);
+//        return response()->json($notificacion->id_tipo_notificacion);
     }
 
 //    private function tipo_not($valor){

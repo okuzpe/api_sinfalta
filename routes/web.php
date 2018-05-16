@@ -48,6 +48,8 @@ $app->post('notificaciones/show', 'NotificacionesController@show');
 $app->post('notificaciones/estado', 'NotificacionesController@cambiarEstado');
 $app->post('notificaciones/unirme/equipo', 'NotificacionesController@unirmeEquipo');
 
+$app->post('scan/retar', 'ScanController@retar');
+
 
 
 
