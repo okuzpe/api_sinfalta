@@ -60,7 +60,7 @@ class ScanController extends Controller
         $existe_partida=DB::table('partida')
             ->where('equipo_creador', '=', $equipo->id_equipo)
             ->where('equipo_retador', '=', $id_equipo_retar)
-            ->exists();
+            ->count();
 
 
         $cantidad_partidas_creadas=DB::table('partida')
@@ -68,7 +68,9 @@ class ScanController extends Controller
             ->where('id_estatus', '=', '1')
             ->count();
 
-        if(!$existe_partida) {
+        //BUG DE LA CONDICION...
+        if($existe_partida<1) {
+            $existe_partida=null;
             if ($equipo->id_equipo != $id_equipo_retar) {
                 if ($cantidad_partidas_creadas < 3) {
                     if ($partida->save()) {
