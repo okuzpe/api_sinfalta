@@ -148,7 +148,7 @@ class NotificacionesController extends Controller
         $id_notificacion = $request->get("id_notificacion");
 
         $notificacion=DB::table('notificaciones')
-            ->select('id_tipo_notificacion','id_creador','id_destino','id_equipo')
+            ->select('id_tipo_notificacion','id_creador','id_destino','id_equipo','id_partida')
             ->where('id_notificacion','=',$id_notificacion)
             ->first();
 
