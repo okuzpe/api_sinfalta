@@ -21,9 +21,9 @@ class ScanController extends Controller
 
     public function retar(Request $request)
     {
-        $api_token = trim($request->get('api_token'));
-        $nombre_retador=trim($request->get('nombre'));
-        $id_equipo_retar=trim($request->get('id_equipo_retar'));
+        $api_token = $request->get('api_token');
+        $nombre_retador=$request->get('nombre');
+        $id_equipo_retar=$request->get('id_equipo_retar');
 
         $id_jugador_creador= DB::table('jugador')
             ->select('id_jugador')
