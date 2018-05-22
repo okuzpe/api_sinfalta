@@ -133,7 +133,7 @@ class ScanController extends Controller
             ) {
 
                 if ($notificacion_amigo->save()) {
-                    return response()->json(['success' => true, "estado" => "El jugador se ha invitado a tu lista de amigos"]);
+                    return response()->json(['success' => true, "estado" => "En espera de que el jugador acepte la solicitud"]);
 
                 } else {
                     return response()->json(['success' => true, "estado" => "No se pudo invitar al jugador a tu lista de amigos"]);
