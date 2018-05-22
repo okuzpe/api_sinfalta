@@ -109,23 +109,28 @@ class ScanController extends Controller
             ->select('id_jugador')
             ->where('api_token', '=', $request->get('api_token'))
             ->first();
+
+        $id_destino= DB::table('jugador')
+            ->select('id_jugador')
+            ->where('api_token', '=',  $request->get('id_destino'))
+            ->first();
         $notificacion_amigo = new Notificaion();
         $notificacion_amigo->id_creador = $id_jugador->id_jugador;
-        $notificacion_amigo->id_destino = $request->get('id_destino');
+        $notificacion_amigo->id_destino = $id_destino->id_jugador;
         $notificacion_amigo->id_estatus = 3;
         $notificacion_amigo->id_tipo_notificacion = 1;
 
 
         $existe_notificacion = DB::table('notificaciones')
             ->where('id_creador', '=', $id_jugador->id_jugador)
-            ->where('id_destino', '=', $request->get('id_destino'))
+            ->where('id_destino', '=', $id_destino->id_jugador)
             ->count();
         if ($existe_notificacion >= 0) {
-
             if (!DB::table('amigos')
                 ->where('id_jugador', '=', $id_jugador->id_jugador)
-                ->where('id_amigo', '=', $request->get('id_destino'))
-                ->exists()) {
+                ->where('id_amigo', '=', $id_destino->id_jugador)
+                ->exists()
+            ) {
 
                 if ($notificacion_amigo->save()) {
                     return response()->json(['success' => true, "estado" => "El jugador se ha invitado a tu lista de amigos"]);
