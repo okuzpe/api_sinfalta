@@ -71,7 +71,7 @@ class ScanController extends Controller
             ->where('id_creador', '=', $equipo->id_equipo)
             ->where('id_destino', '=', $jugador_id_jugador->id_jugador)
             ->where('id_equipo', '=', $id_equipo_retar)
-            ->exist();
+            ->exists();
 
         //BUG DE LA CONDICION...
         if ($existe_notificacion){
