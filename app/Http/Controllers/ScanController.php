@@ -41,7 +41,6 @@ class ScanController extends Controller
             ->where('id_equipo', '=', $equipo->id_equipo)
             ->first();
 
-
         $date =date_create($request->get('fechahora_inico'));
         $date->format('Y-m-d H:i:s');
 
@@ -55,7 +54,7 @@ class ScanController extends Controller
         $partida->descripcion = $request->get('descripcion');
         $partida->fechahora_inicio = $date;
         $partida->equipo_creador = $equipo->id_equipo;
-//        $partida->equipo_retador=$id_equipo_retar;
+
 
         $existe_partida=DB::table('partida')
             ->where('equipo_creador', '=', $equipo->id_equipo)
@@ -70,10 +69,10 @@ class ScanController extends Controller
 
         //BUG DE LA CONDICION...
         if($existe_partida<1) {
-            $existe_partida=null;
+//            $existe_partida=null;
             if ($equipo->id_equipo != $id_equipo_retar) {
                 if ($cantidad_partidas_creadas < 3) {
-                    if ($partida->save()) {
+//                    if ($partida->save()) {
 
                         $notificacion = new Notificaion();
                         $notificacion->id_partida=$partida->id_partida;
@@ -83,14 +82,14 @@ class ScanController extends Controller
                         $notificacion->id_tipo_notificacion = 3;
                         $notificacion->id_estatus = 3;
 
-                        if ($notificacion->save()) {
+                        if ($notificacion->save() && $partida->save()) {
                             return response()->json(['success' => true, "estado" => "Solicitud de reto de partida enviada"]);
                         } else {
                             return response()->json(['success' => false, "estado" => "No se retar al equipo"]);
                         }
-                    } else {
-                        return response()->json(['success' => false, "estado" => "No se retar al equipo"]);
-                    }
+//                    } else {
+//                        return response()->json(['success' => false, "estado" => "No se retar al equipo"]);
+//                    }
                 } else {
                     return response()->json(['success' => false, "estado" => "No se retar al equipo, no se puede tener mas de 3 partidas por equipo creadas al mismo tiempo"]);
                 }
