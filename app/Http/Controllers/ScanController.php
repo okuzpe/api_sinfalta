@@ -59,7 +59,7 @@ class ScanController extends Controller
         $existe_partida = DB::table('partida')
             ->where('equipo_creador', '=', $equipo->id_equipo)
             ->where('equipo_retador', '=', $id_equipo_retar)
-            ->count();
+            ->exists();
 
         $cantidad_partidas_creadas = DB::table('partida')
             ->where('equipo_creador', '=', $equipo->id_equipo)
@@ -73,11 +73,12 @@ class ScanController extends Controller
             ->where('id_equipo', '=', $id_equipo_retar)
             ->exists();
 
-        //BUG DE LA CONDICION...
-        if ($existe_notificacion){
-            if ($existe_partida < 1) {
+//        BUG DE LA CONDICION...
+        if (!$existe_notificacion){
+            if (!$existe_partida ) {
                 if ($equipo->id_equipo != $id_equipo_retar) {
                     if ($cantidad_partidas_creadas < 3) {
+                        $partida->save();
                         $notificacion = new Notificaion();
                         $notificacion->id_partida = $partida->id_partida;
                         $notificacion->id_creador = $equipo->id_equipo; //fino-> id_equipo a creador de la partida
@@ -86,7 +87,7 @@ class ScanController extends Controller
                         $notificacion->id_tipo_notificacion = 3;
                         $notificacion->id_estatus = 3;
 
-                        if ($partida->save() && $notificacion->save()) {
+                        if ($notificacion->save()) {
                             return response()->json(['success' => true, "estado" => "Solicitud de reto de partida enviada"]);
                         } else {
                             return response()->json(['success' => false, "estado" => "No se retar al equipo"]);
@@ -102,8 +103,9 @@ class ScanController extends Controller
             }
         }else{
             return response()->json(['success' => false, "estado" => "La notificacion ya ha sido enviada,favor espere"]);
-
         }
+//        return response()->json(['success' => false, "estado" =>$existe_partida ]);
+
     }
 
     public function amigo(Request $request)
