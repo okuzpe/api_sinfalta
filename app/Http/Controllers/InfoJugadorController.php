@@ -47,24 +47,26 @@ class InfoJugadorController extends Controller
             ->orwhere('id_amigo','=',$id_jugador->id_jugador)
             ->get();
 
-        if ($amigos[0]->id_amigo==$id_jugador->id_jugador){
-            $amigos[0]->id_amigo=$amigos[0]->id_jugador;
+        if (!$amigos->isEmpty()) {
+            if ($amigos[0]->id_amigo == $id_jugador->id_jugador) {
+                $amigos[0]->id_amigo = $amigos[0]->id_jugador;
 
+            }
+
+            $i = 0;
+            foreach ($amigos as $a) {
+                $amigos[$i]->datos = DB::table('jugador')
+                    ->where('id_jugador', '=', $amigos[$i]->id_amigo)
+                    ->select('nombre', 'apodo', 'tiene_imagen')
+                    ->get();
+                $i++;
+            }
+            return response()->json(['success'=>true,'amigos'=>$amigos]);
+        }else{
+            $amigos=null;
+            return response()->json(['success'=>true,'amigos'=>$amigos]);
         }
 
-        $i = 0;
-        foreach ($amigos as $a) {
-
-            $amigos[$i]->datos =DB::table('jugador')
-                ->where('id_jugador','=',$amigos[$i]->id_amigo)
-                ->select('nombre','apodo','tiene_imagen')
-                ->get();
-            $i++;
-
-        }
-
-
-        return response()->json(['success'=>true,'amigos'=>$amigos]);
 
     }
 }

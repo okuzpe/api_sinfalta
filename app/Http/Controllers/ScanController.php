@@ -37,7 +37,7 @@ class ScanController extends Controller
 
         $jugador_id_jugador = DB::table('jugador_equipo')
             ->select('id_jugador')
-            ->where('id_rangoequipo', '=', $id_jugador_creador)
+            ->where('id_rangoequipo', '=', 1)
             ->where('id_equipo', '=', $equipo->id_equipo)
             ->first();
 
@@ -58,7 +58,7 @@ class ScanController extends Controller
 
         $existe_partida = DB::table('partida')
             ->where('equipo_creador', '=', $equipo->id_equipo)
-            ->where('equipo_retador', '=', $id_equipo_retar)
+            ->where('id_estatus', '=', 1)
             ->exists();
 
         $cantidad_partidas_creadas = DB::table('partida')
@@ -66,21 +66,40 @@ class ScanController extends Controller
             ->where('id_estatus', '=', '1')
             ->count();
 
-        $existe_notificacion = DB::table('notificaciones')
-            ->where('id_partida', '=', $partida->id_partida)
-            ->where('id_creador', '=', $equipo->id_equipo)
-            ->where('id_destino', '=', $jugador_id_jugador->id_jugador)
-            ->where('id_equipo', '=', $id_equipo_retar)
-            ->exists();
+//        $notificacion_existe=DB::table('notificaciones')
+//            ->where('id_partida', '=', $nombre_retador)
+//            ->where('nombre', '=', $nombre_retador)
+//            ->exists();
+
 
 //        BUG DE LA CONDICION...
-        if (!$existe_notificacion){
-            if (!$existe_partida ) {
+            if (!$existe_partida){
                 if ($equipo->id_equipo != $id_equipo_retar) {
                     if ($cantidad_partidas_creadas < 3) {
-                        $partida->save();
+                        if ($partida->save()) {
+                            $notificacion = new Notificaion();
+                            $notificacion->id_partida = $partida->id_partida;
+                            $notificacion->id_creador = $equipo->id_equipo; //fino-> id_equipo a creador de la partida
+                            $notificacion->id_destino = $jugador_id_jugador->id_jugador;//fino-> id del capitan de equipo
+                            $notificacion->id_equipo = $id_equipo_retar;//fino-> id_equipo a retar en la partida
+                            $notificacion->id_tipo_notificacion = 3;
+                            $notificacion->id_estatus = 3;
+
+                            if ($notificacion->save()) {
+                                return response()->json(['success' => true, "estado" => "Solicitud de reto de partida enviada"]);
+                            } else {
+                                return response()->json(['success' => false, "estado" => "No se pudo retar al equipo"]);
+                            }
+                        }else{
+                            return response()->json(['success' => false, "estado" => "No se pudo retar al equipo"]);
+                        }
+                    } else {
+                        return response()->json(['success' => false, "estado" => "No se retar al equipo, no se puede tener mas de 3 partidas por equipo creadas al mismo tiempo"]);
+                    }
+                } else {
+                    if ($notificacion_existe>0) {
                         $notificacion = new Notificaion();
-                        $notificacion->id_partida = $partida->id_partida;
+                        $notificacion->id_partida = $notificacion_existe->id_partida;
                         $notificacion->id_creador = $equipo->id_equipo; //fino-> id_equipo a creador de la partida
                         $notificacion->id_destino = $jugador_id_jugador->id_jugador;//fino-> id del capitan de equipo
                         $notificacion->id_equipo = $id_equipo_retar;//fino-> id_equipo a retar en la partida
@@ -90,21 +109,15 @@ class ScanController extends Controller
                         if ($notificacion->save()) {
                             return response()->json(['success' => true, "estado" => "Solicitud de reto de partida enviada"]);
                         } else {
-                            return response()->json(['success' => false, "estado" => "No se retar al equipo"]);
+                            return response()->json(['success' => false, "estado" => "No se pudo retar al equipo"]);
                         }
-                    } else {
-                        return response()->json(['success' => false, "estado" => "No se retar al equipo, no se puede tener mas de 3 partidas por equipo creadas al mismo tiempo"]);
                     }
-                } else {
-                    return response()->json(['success' => false, "estado" => "No puedes retar a tu mismo equipo"]);
+
                 }
             } else {
-                return response()->json(['success' => false, "estado" => "Ya se envio la solicitud de reto de partida"]);
+                return response()->json(['success' => false, "estado" =>"A la espera de que el equipo confirme el reto, igualmente la gente puede ingresar a esta partida" ]);
             }
-        }else{
-            return response()->json(['success' => false, "estado" => "La notificacion ya ha sido enviada,favor espere"]);
-        }
-//        return response()->json(['success' => false, "estado" =>$existe_partida ]);
+//        return response()->json(['success' => false, "estado" =>$existe_partida,"id_e_c"=>$equipo->id_equipo,"id_e_r"=>$id_equipo_retar ]);
 
     }
 
@@ -130,14 +143,13 @@ class ScanController extends Controller
         $existe_notificacion = DB::table('notificaciones')
             ->where('id_creador', '=', $id_jugador->id_jugador)
             ->where('id_destino', '=', $id_destino->id_jugador)
-            ->count();
-        if ($existe_notificacion >= 0) {
-            if (!DB::table('amigos')
+            ->exists();
+        if (!$existe_notificacion) {
+            $son_amigos=DB::table('amigos')
                 ->where('id_jugador', '=', $id_jugador->id_jugador)
                 ->where('id_amigo', '=', $id_destino->id_jugador)
-                ->exists()
-            ) {
-
+                ->exists();
+            if (!$son_amigos) {
                 if ($notificacion_amigo->save()) {
                     return response()->json(['success' => true, "estado" => "En espera de que el jugador acepte la solicitud"]);
 
@@ -150,7 +162,6 @@ class ScanController extends Controller
             }
         } else {
             return response()->json(['success' => true, "estado" => "El jugador esta pendiente por aceptar la invitacion"]);
-
         }
     }
 
