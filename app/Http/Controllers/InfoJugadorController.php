@@ -63,7 +63,7 @@ class InfoJugadorController extends Controller
             }
             return response()->json(['success'=>true,'amigos'=>$amigos]);
         }else{
-            $amigos=null;
+            $amigos=[];
             return response()->json(['success'=>true,'amigos'=>$amigos]);
         }
 
