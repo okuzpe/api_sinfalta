@@ -68,6 +68,7 @@ class NotificacionesController extends Controller
                 ->first();
             $notificacion_amigo = new Notificaion();
             $notificacion_amigo->id_creador = $id_jugador->id_jugador;
+            $notificacion_amigo->id_partida =null;
             $notificacion_amigo->id_destino = $request->get('id_destino');
             $notificacion_amigo->id_estatus = 3;
             $notificacion_amigo->id_tipo_notificacion = 1;
@@ -76,8 +77,8 @@ class NotificacionesController extends Controller
             $existe_notificacion = DB::table('notificaciones')
                 ->where('id_creador', '=', $id_jugador->id_jugador)
                 ->where('id_destino', '=', $request->get('id_destino'))
-                ->count();
-            if ($existe_notificacion >= 0) {
+                ->exists();
+            if (!$existe_notificacion) {
 
                 if (!DB::table('amigos')
                     ->where('id_jugador', '=', $id_jugador->id_jugador)
@@ -129,8 +130,8 @@ class NotificacionesController extends Controller
                     ->where('id_equipo', '=', $notificaciones[$i]->id_equipo)
                     ->select('nombre')
                     ->first();
-                $i++;
             }
+            $i++;
         }
 
 
@@ -203,9 +204,6 @@ class NotificacionesController extends Controller
 //        return response()->json($notificacion->id_tipo_notificacion);
     }
 
-//    private function tipo_not($valor){
-//
-//    }
 
     public function unirmeEquipo(Request $request)
     {
