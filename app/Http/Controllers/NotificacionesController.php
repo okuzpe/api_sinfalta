@@ -77,6 +77,7 @@ class NotificacionesController extends Controller
             $existe_notificacion = DB::table('notificaciones')
                 ->where('id_creador', '=', $id_jugador->id_jugador)
                 ->where('id_destino', '=', $request->get('id_destino'))
+                ->where('id_estatus', '=', 3)
                 ->exists();
             if (!$existe_notificacion) {
 
