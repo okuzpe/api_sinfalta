@@ -80,12 +80,11 @@ class NotificacionesController extends Controller
                 ->where('id_estatus', '=', 3)
                 ->exists();
             if (!$existe_notificacion) {
-
-                if (!DB::table('amigos')
+                $son_amigos=DB::table('amigos')
                     ->where('id_jugador', '=', $id_jugador->id_jugador)
                     ->where('id_amigo', '=', $request->get('id_destino'))
-                    ->exists()
-                ) {
+                    ->exists();
+                if (!$son_amigos) {
                     if ($notificacion_amigo->save()) {
                         return response()->json(['success' => true, "estado" => "El jugador se ha invitado a tu lista de amigos"]);
 
