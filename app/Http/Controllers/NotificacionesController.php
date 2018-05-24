@@ -68,7 +68,7 @@ class NotificacionesController extends Controller
                 ->first();
             $notificacion_amigo = new Notificaion();
             $notificacion_amigo->id_creador = $id_jugador->id_jugador;
-            $notificacion_amigo->id_partida =null;
+
             $notificacion_amigo->id_destino = $request->get('id_destino');
             $notificacion_amigo->id_estatus = 3;
             $notificacion_amigo->id_tipo_notificacion = 1;
@@ -97,8 +97,10 @@ class NotificacionesController extends Controller
                 }
             } else {
                 return response()->json(['success' => true, "estado" => "El jugador esta pendiente por aceptar la invitacion"]);
-//                return $existe_notificacion;
             }
+
+//            return response()->json(['success' => true, $existe_notificacion]);
+
         }
     }
 
