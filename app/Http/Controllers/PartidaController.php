@@ -98,7 +98,7 @@ class PartidaController extends Controller
             ->count();
 
 
-        if ($creador_rango=1 or $creador_rango=2) {
+        if ($creador_rango!=1) {
             if ($cantidad_partidas_creadas < 3) {
                 if ($partida->save()) {
                     return response()->json(['success' => true, "estado" => "Partida creado exitosamente"]);
