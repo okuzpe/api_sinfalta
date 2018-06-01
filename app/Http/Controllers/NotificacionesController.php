@@ -222,7 +222,7 @@ class NotificacionesController extends Controller
             ->select('id_jugador')
             ->where('id_equipo', '=', $id_equipo)
             ->where('id_jugador', '=', $jugador->id_jugador)
-            ->first();
+            ->get();
 
 
         if (count($check_esta_en_el_equipo) == 0) {
