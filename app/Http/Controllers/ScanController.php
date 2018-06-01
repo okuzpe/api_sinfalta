@@ -129,9 +129,9 @@ class ScanController extends Controller
             ->where('api_token', '=', $request->get('api_token'))
             ->first();
 
-        $id_destino= DB::table('jugador')
+        $id_destino = DB::table('jugador')
             ->select('id_jugador')
-            ->where('api_token', '=',  $request->get('id_destino'))
+            ->where('api_token', '=', $request->get('id_destino'))
             ->first();
         $notificacion_amigo = new Notificaion();
         $notificacion_amigo->id_creador = $id_jugador->id_jugador;
@@ -144,24 +144,31 @@ class ScanController extends Controller
             ->where('id_creador', '=', $id_jugador->id_jugador)
             ->where('id_destino', '=', $id_destino->id_jugador)
             ->exists();
-        if (!$existe_notificacion) {
-            $son_amigos=DB::table('amigos')
-                ->where('id_jugador', '=', $id_jugador->id_jugador)
-                ->where('id_amigo', '=', $id_destino->id_jugador)
-                ->exists();
-            if (!$son_amigos) {
-                if ($notificacion_amigo->save()) {
-                    return response()->json(['success' => true, "estado" => "En espera de que el jugador acepte la solicitud"]);
 
+        if ($id_jugador->api_token!=$id_destino->api_token) {
+
+            if (!$existe_notificacion) {
+                $son_amigos = DB::table('amigos')
+                    ->where('id_jugador', '=', $id_jugador->id_jugador)
+                    ->where('id_amigo', '=', $id_destino->id_jugador)
+                    ->exists();
+                if (!$son_amigos) {
+                    if ($notificacion_amigo->save()) {
+                        return response()->json(['success' => true, "estado" => "En espera de que el jugador acepte la solicitud"]);
+
+                    } else {
+                        return response()->json(['success' => true, "estado" => "No se pudo invitar al jugador a tu lista de amigos"]);
+                    }
                 } else {
-                    return response()->json(['success' => true, "estado" => "No se pudo invitar al jugador a tu lista de amigos"]);
+                    return response()->json(['success' => true, "estado" => "El jugador y usted ya son amigos"]);
+
                 }
             } else {
-                return response()->json(['success' => true, "estado" => "El jugador y usted ya son amigos"]);
-
+                return response()->json(['success' => true, "estado" => "El jugador esta pendiente por aceptar la invitacion"]);
             }
-        } else {
-            return response()->json(['success' => true, "estado" => "El jugador esta pendiente por aceptar la invitacion"]);
+        }else{
+            return response()->json(['success' => true, "estado" => "No te puedes invitar a ti mismo como amigo"]);
+
         }
     }
 
