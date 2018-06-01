@@ -257,7 +257,7 @@ class NotificacionesController extends Controller
 
                 }
             }else{
-                return response()->json(['success' => true, "estado" => "En espera a que acepten tu solicitud"]);
+                return response()->json(['success' => false, "estado" => "En espera a que acepten tu solicitud"]);
             }
 
         } else {
@@ -266,4 +266,7 @@ class NotificacionesController extends Controller
 
 //            return response()->json($id_destino[0]->id_jugador);
     }
+
+
+
 }

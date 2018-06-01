@@ -221,4 +221,25 @@ class EquipoController extends Controller
         }
     }
 
+    public function tieneEquipo(Request $request){
+        $token=$request->get('api_token');
+        $jugador = DB::table('jugador')
+            ->select('id_jugador')
+            ->where('api_token','=',$token)
+            ->first();
+
+        $tiene =DB::table('jugador_equipo')
+            ->where( 'id_jugador','=',$jugador->id_jugador)
+            ->select('id_jugador','id_equipo','id_rangoequipo')
+            ->count();
+
+        if($tiene>0){
+            $tiene_equipo=true;
+        }else{
+            $tiene_equipo=false;
+        }
+        return response()->json(['success' => true,'tiene_equipo'=>$tiene_equipo]);
+
+    }
+
 }
