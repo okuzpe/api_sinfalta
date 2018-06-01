@@ -125,12 +125,12 @@ class ScanController extends Controller
     {
 
         $id_jugador = DB::table('jugador')
-            ->select('id_jugador')
+            ->select('id_jugador','api_token')
             ->where('api_token', '=', $request->get('api_token'))
             ->first();
 
         $id_destino = DB::table('jugador')
-            ->select('id_jugador')
+            ->select('id_jugador','api_token')
             ->where('api_token', '=', $request->get('id_destino'))
             ->first();
         $notificacion_amigo = new Notificaion();
@@ -146,7 +146,6 @@ class ScanController extends Controller
             ->exists();
 
         if ($id_jugador->api_token!=$id_destino->api_token) {
-
             if (!$existe_notificacion) {
                 $son_amigos = DB::table('amigos')
                     ->where('id_jugador', '=', $id_jugador->id_jugador)
