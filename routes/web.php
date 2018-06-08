@@ -28,6 +28,9 @@ $app->post('partida/show/one', 'PartidaController@showOne');
 $app->post('partida/info_spinner', 'PartidaController@infoEquipos');
 $app->post('partida/aceptar', 'PartidaController@aceptarPartida');
 
+$app->post('partida/libre', 'PartidaLibreController@cargarDatos');
+$app->post('partida/libre/crear', 'PartidaLibreController@crearPartidaLibre');
+
 $app->post('equipo/create', 'EquipoController@create');
 $app->post('equipo/show', 'EquipoController@show');
 $app->post('equipo/setting', 'EquipoController@loadSetting');
