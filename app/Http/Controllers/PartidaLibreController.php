@@ -43,8 +43,7 @@ class PartidaLibreController extends Controller
         $partida->equipo_creador = null;
 
         if ($partida->save()){
-            return response()->json(['success' => true]);
-
+            return response()->json(['success' => true,'id_partida'=>$partida->id_partida]);
         }else{
             return response()->json(['success' => false]);
         }
@@ -57,13 +56,16 @@ class PartidaLibreController extends Controller
 
     public function cargarDatos(Request $request)
     {
-        $token=$request->get('api_token');
-        $jugador = DB::table('jugador')
-            ->select('id_jugador')
-            ->where('api_token','=',$token)
-            ->first();
+
+        $id_partida=$request->get('id_partida');
 
 
+        $jugadores_partida=DB::table('jugador_partida_libre')
+            ->select('id_jugador','id_tipo_equipo')
+            ->where('id_partida','=',$id_partida)
+            ->get();
+
+        return response()->json(['success' => true,'jugadores' => $jugadores_partida]);
 
     }
 }
