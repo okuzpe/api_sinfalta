@@ -59,6 +59,11 @@ class PartidaLibreController extends Controller
 
         $id_partida=$request->get('id_partida');
 
+        $partida = DB::table('partida')
+            ->select('descripcion')
+            ->where('id_partida','=',$id_partida)
+            ->first();
+
 
         $jugadores_partida=DB::table('jugador_partida_libre')
             ->join('jugador','jugador_partida_libre.id_jugador','=','jugador.id_jugador')
@@ -67,7 +72,7 @@ class PartidaLibreController extends Controller
             ->where('id_partida','=',$id_partida)
             ->get();
 
-        return response()->json(['success' => true,'jugadores' => $jugadores_partida]);
+        return response()->json(['success' => true,'jugadores' => $jugadores_partida,'descripcion'=>$partida]);
 
     }
 }
