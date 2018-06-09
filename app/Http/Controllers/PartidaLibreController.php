@@ -61,7 +61,9 @@ class PartidaLibreController extends Controller
 
 
         $jugadores_partida=DB::table('jugador_partida_libre')
-            ->select('id_jugador','id_tipo_equipo')
+            ->join('jugador','jugador_partida_libre.id_jugador','=','jugador.id_jugador')
+            ->select('jugador.id_jugador','jugador_partida_libre.id_tipo_equipo','jugador.tiene_imagen',
+                'jugador.nombre','jugador.apodo')
             ->where('id_partida','=',$id_partida)
             ->get();
 
