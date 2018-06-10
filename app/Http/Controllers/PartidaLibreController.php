@@ -86,13 +86,13 @@ class PartidaLibreController extends Controller
         $jugador = DB::table('jugador')
             ->select('id_jugador')
             ->where('api_token','=',$token)
-            ->first();
+            ->first()->id_jugador;
 
         switch ($accion){
             case "salir_partida":
                 if ($this->checkEstaPartida($jugador,$id_partida)) {
                     $accion = DB::table('jugador_partida_libre')
-                        ->where('api_token', '=', $token)
+                        ->where('id_jugador', '=',$jugador)
                         ->where('id_partida', '=', $id_partida)
                         ->delete();
                     if ($accion) {
@@ -101,15 +101,14 @@ class PartidaLibreController extends Controller
                         return response()->json(['success' => false,'estado'=>'Ha ocurrido un error']);
                     }
                 }else{
-                    return response()->json(['success' => false,'estado'=>'Ya esta dentro de la sala, refresque la sala']);
+                    return response()->json(['success' => false,'estado'=>'Usted no esta en ninguno de los equipos.']);
                 }
                 break;
             case "refresh":
-                $this->refreshPartida($id_partida);
+                return $this->refreshPartida($id_partida);
                 break;
             case "unir_rojo":
-                if ($this->checkEstaRojo(3)) {
-
+                if (!$this->checkEstaEnEquipos($jugador,$id_partida,3)) {
 
                     $partida_libre = new JugadorPartidaLibre();
                     $partida_libre->id_jugador = $jugador;
@@ -119,13 +118,15 @@ class PartidaLibreController extends Controller
                     if ($partida_libre->save()) {
                         return response()->json(['success' => true]);
                     } else {
-                        return response()->json(['success' => false]);
+                        return response()->json(['success' => false,'estado'=>"ha ocurrido un error"]);
                     }
+                }else{
+                    return response()->json(['success' =>false,'estado'=>"ya esta en el equipo rojo, refresque la sala"]);
                 }
                 break;
 
             case "unir_azul":
-                if ($this->checkEstaRojo($jugador,$id_partida,4)) {
+                if (!$this->checkEstaEnEquipos($jugador,$id_partida,4)) {
                     $partida_libre = new JugadorPartidaLibre();
                     $partida_libre->id_jugador = $jugador;
                     $partida_libre->id_partida = $id_partida;
@@ -134,16 +135,16 @@ class PartidaLibreController extends Controller
                     if ($partida_libre->save()) {
                         return response()->json(['success' => true]);
                     } else {
-
-                        return response()->json(['success' => false]);
+                        return response()->json(['success' => false,'estado'=>"ha ocurrido un error"]);
                     }
+                }else{
+                    return response()->json(['success' => false,'estado'=>"ya esta en el equipo rojo, refresque la sala"]);
                 }
                 break;
+            default:
+                return response()->json(['success' => false,'estado'=>"ha ocurrido un error"]);
         }
-
-
     }
-
 
     function checkEstaPartida($jugador,$id_partida)
     {
@@ -177,7 +178,7 @@ class PartidaLibreController extends Controller
 
     }
 
-    function checkEstaRojo($jugador,$id_partida,$id_tipo_equipo)
+    function checkEstaEnEquipos($jugador, $id_partida, $id_tipo_equipo)
     {
         if (DB::table('jugador_partida_libre')
             ->where('id_jugador', '=', $jugador)
