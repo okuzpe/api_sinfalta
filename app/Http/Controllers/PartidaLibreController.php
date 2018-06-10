@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Jugador;
+use App\JugadorPartidaLibre;
 use App\Partida;
 use DB;
 use Illuminate\Http\Request;
@@ -72,7 +73,65 @@ class PartidaLibreController extends Controller
             ->where('id_partida','=',$id_partida)
             ->get();
 
-        return response()->json(['success' => true,'jugadores' => $jugadores_partida,'descripcion'=>$partida]);
+        return response()->json(['success' => true,'jugadores' => $jugadores_partida,'descripcion'=>$partida->descripcion]);
+
+    }
+
+    public function acciones(Request $request)
+    {
+        $token=$request->get('api_token');
+        $accion=$request->get('accion');
+        $id_partida=$request->get('id_partida');
+
+        $jugador = DB::table('jugador')
+            ->select('id_jugador')
+            ->where('api_token','=',$token)
+            ->first();
+
+        switch ($accion){
+            case "salir_partida":
+                $accion=DB::table('jugador_partida_libre')
+                    ->where('api_token','=',$token)
+                    ->where('id_partida','=',$id_partida)
+                    ->delete();
+                if ($accion){
+                    return response()->json(['success' => true]);
+                }else{
+                    return response()->json(['success' => false]);
+                }
+                break;
+            case "refresh":
+
+
+
+                break;
+            case "unir_rojo":
+                $partida_libre = new JugadorPartidaLibre();
+                $partida_libre->id_jugador = $jugador;
+                $partida_libre->id_partida = $id_partida;
+                $partida_libre->id_tipo_equipo = 3;
+
+                if ($partida_libre->save()){
+                    return response()->json(['success' => true]);
+                }else{
+                    return response()->json(['success' => false]);
+                }
+                break;
+
+            case "unir_azul":
+                $partida_libre = new JugadorPartidaLibre();
+                $partida_libre->id_jugador = $jugador;
+                $partida_libre->id_partida = $id_partida;
+                $partida_libre->id_tipo_equipo = 4;
+
+                if ($partida_libre->save()){
+                    return response()->json(['success' => true]);
+                }else{
+                    return response()->json(['success' => false]);
+                }
+                break;
+        }
+
 
     }
 }

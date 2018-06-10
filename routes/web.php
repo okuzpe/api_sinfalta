@@ -30,6 +30,7 @@ $app->post('partida/aceptar', 'PartidaController@aceptarPartida');
 
 $app->post('partida/libre', 'PartidaLibreController@cargarDatos');
 $app->post('partida/libre/crear', 'PartidaLibreController@crearPartidaLibre');
+$app->post('partida/libre/acciones', 'PartidaLibreController@acciones');
 
 $app->post('equipo/create', 'EquipoController@create');
 $app->post('equipo/show', 'EquipoController@show');
