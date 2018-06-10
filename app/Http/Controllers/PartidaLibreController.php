@@ -104,9 +104,9 @@ class PartidaLibreController extends Controller
                     return response()->json(['success' => false,'estado'=>'Usted no esta en ninguno de los equipos.']);
                 }
                 break;
-            case "refresh":
-                return $this->refreshPartida($id_partida);
-                break;
+//            case "refresh":
+//                return $this->refreshPartida($id_partida);
+//                break;
             case "unir_rojo":
                 if (!$this->checkEstaEnEquipos($jugador,$id_partida,3)) {
 
@@ -158,32 +158,33 @@ class PartidaLibreController extends Controller
         }
     }
 
-    function refreshPartida($id_partida)
-    {
-
-        $partida = DB::table('partida')
-            ->select('descripcion')
-            ->where('id_partida','=',$id_partida)
-            ->first();
-
-
-        $jugadores_partida=DB::table('jugador_partida_libre')
-            ->join('jugador','jugador_partida_libre.id_jugador','=','jugador.id_jugador')
-            ->select('jugador.id_jugador','jugador_partida_libre.id_tipo_equipo','jugador.tiene_imagen',
-                'jugador.nombre','jugador.apodo')
-            ->where('id_partida','=',$id_partida)
-            ->get();
-
-        return response()->json(['success' => true,'jugadores' => $jugadores_partida,'descripcion'=>$partida->descripcion]);
-
-    }
+//    function refreshPartida($id_partida)
+//    {
+//
+//        $partida = DB::table('partida')
+//            ->select('descripcion')
+//            ->where('id_partida','=',$id_partida)
+//            ->first();
+//
+//
+//        $jugadores_partida=DB::table('jugador_partida_libre')
+//            ->join('jugador','jugador_partida_libre.id_jugador','=','jugador.id_jugador')
+//            ->select('jugador.id_jugador','jugador_partida_libre.id_tipo_equipo','jugador.tiene_imagen',
+//                'jugador.nombre','jugador.apodo')
+//            ->where('id_partida','=',$id_partida)
+//            ->get();
+//
+//        return response()->json(['success' => true,'jugadores' => $jugadores_partida,'descripcion'=>$partida->descripcion]);
+//
+//    }
 
     function checkEstaEnEquipos($jugador, $id_partida, $id_tipo_equipo)
     {
         if (DB::table('jugador_partida_libre')
             ->where('id_jugador', '=', $jugador)
             ->where('id_partida', '=', $id_partida)
-            ->where('id_tipo_equipo', '=', $id_tipo_equipo)
+            ->orwhere('id_tipo_equipo', '=', 3)
+            ->orwhere('id_tipo_equipo', '=', 4)
             ->first()) {
             return true;
         }else{
