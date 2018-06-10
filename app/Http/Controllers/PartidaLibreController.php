@@ -124,7 +124,6 @@ class PartidaLibreController extends Controller
                     return response()->json(['success' =>false,'estado'=>"ya esta en el equipo rojo, refresque la sala"]);
                 }
                 break;
-
             case "unir_azul":
                 if (!$this->checkEstaEnEquipos($jugador,$id_partida,4)) {
                     $partida_libre = new JugadorPartidaLibre();
@@ -143,6 +142,7 @@ class PartidaLibreController extends Controller
                 break;
             default:
                 return response()->json(['success' => false,'estado'=>"ha ocurrido un error"]);
+                break;
         }
     }
 
