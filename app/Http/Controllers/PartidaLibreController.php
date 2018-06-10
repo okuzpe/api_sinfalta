@@ -90,48 +90,103 @@ class PartidaLibreController extends Controller
 
         switch ($accion){
             case "salir_partida":
-                $accion=DB::table('jugador_partida_libre')
-                    ->where('api_token','=',$token)
-                    ->where('id_partida','=',$id_partida)
-                    ->delete();
-                if ($accion){
-                    return response()->json(['success' => true]);
+                if ($this->checkEstaPartida($jugador,$id_partida)) {
+                    $accion = DB::table('jugador_partida_libre')
+                        ->where('api_token', '=', $token)
+                        ->where('id_partida', '=', $id_partida)
+                        ->delete();
+                    if ($accion) {
+                        return response()->json(['success' => true]);
+                    } else {
+                        return response()->json(['success' => false,'estado'=>'Ha ocurrido un error']);
+                    }
                 }else{
-                    return response()->json(['success' => false]);
+                    return response()->json(['success' => false,'estado'=>'Ya esta dentro de la sala, refresque la sala']);
                 }
                 break;
             case "refresh":
-
-
-
+                $this->refreshPartida($id_partida);
                 break;
             case "unir_rojo":
-                $partida_libre = new JugadorPartidaLibre();
-                $partida_libre->id_jugador = $jugador;
-                $partida_libre->id_partida = $id_partida;
-                $partida_libre->id_tipo_equipo = 3;
+                if ($this->checkEstaRojo(3)) {
 
-                if ($partida_libre->save()){
-                    return response()->json(['success' => true]);
-                }else{
-                    return response()->json(['success' => false]);
+
+                    $partida_libre = new JugadorPartidaLibre();
+                    $partida_libre->id_jugador = $jugador;
+                    $partida_libre->id_partida = $id_partida;
+                    $partida_libre->id_tipo_equipo = 3;
+
+                    if ($partida_libre->save()) {
+                        return response()->json(['success' => true]);
+                    } else {
+                        return response()->json(['success' => false]);
+                    }
                 }
                 break;
 
             case "unir_azul":
-                $partida_libre = new JugadorPartidaLibre();
-                $partida_libre->id_jugador = $jugador;
-                $partida_libre->id_partida = $id_partida;
-                $partida_libre->id_tipo_equipo = 4;
+                if ($this->checkEstaRojo($jugador,$id_partida,4)) {
+                    $partida_libre = new JugadorPartidaLibre();
+                    $partida_libre->id_jugador = $jugador;
+                    $partida_libre->id_partida = $id_partida;
+                    $partida_libre->id_tipo_equipo = 4;
 
-                if ($partida_libre->save()){
-                    return response()->json(['success' => true]);
-                }else{
-                    return response()->json(['success' => false]);
+                    if ($partida_libre->save()) {
+                        return response()->json(['success' => true]);
+                    } else {
+
+                        return response()->json(['success' => false]);
+                    }
                 }
                 break;
         }
 
 
+    }
+
+
+    function checkEstaPartida($jugador,$id_partida)
+    {
+        if (DB::table('jugador_partida_libre')
+            ->where('id_jugador', '=', $jugador)
+            ->where('id_partida', '=', $id_partida)
+            ->first()) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    function refreshPartida($id_partida)
+    {
+
+        $partida = DB::table('partida')
+            ->select('descripcion')
+            ->where('id_partida','=',$id_partida)
+            ->first();
+
+
+        $jugadores_partida=DB::table('jugador_partida_libre')
+            ->join('jugador','jugador_partida_libre.id_jugador','=','jugador.id_jugador')
+            ->select('jugador.id_jugador','jugador_partida_libre.id_tipo_equipo','jugador.tiene_imagen',
+                'jugador.nombre','jugador.apodo')
+            ->where('id_partida','=',$id_partida)
+            ->get();
+
+        return response()->json(['success' => true,'jugadores' => $jugadores_partida,'descripcion'=>$partida->descripcion]);
+
+    }
+
+    function checkEstaRojo($jugador,$id_partida,$id_tipo_equipo)
+    {
+        if (DB::table('jugador_partida_libre')
+            ->where('id_jugador', '=', $jugador)
+            ->where('id_partida', '=', $id_partida)
+            ->where('id_tipo_equipo', '=', $id_tipo_equipo)
+            ->first()) {
+            return true;
+        }else{
+            return false;
+        }
     }
 }
