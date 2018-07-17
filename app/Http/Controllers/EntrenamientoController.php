@@ -48,7 +48,7 @@ class EntrenamientoController extends Controller
         $entrenamiento->tmb=$tmb;
         $entrenamiento->meta=$meta;
 
-        if ($jugador ==null){
+        if ($jugador){
             if ($entrenamiento->save()){
                 return response()->json(['success' => true,'entrenamiento' => $entrenamiento]);
             }else{
