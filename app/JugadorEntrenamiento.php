@@ -31,4 +31,5 @@ class JugadorEntrenamiento extends Model implements AuthenticatableContract, Aut
     protected $hidden = [
 
     ];
+
 }
