@@ -62,7 +62,7 @@ class EntrenamientoController extends Controller
                 $updated=DB::table('jugador_entrenamiento')
                     ->select('tmb','imc','meta')
                     ->where('id_jugador','=',$jugador[0]->id_jugador)
-                    ->get();
+                    ->first();
                 return response()->json(['success' => true,'entrenamiento' =>$updated]);
             }else{
                 return response()->json(['success' => false]);
