@@ -58,6 +58,9 @@ $app->post('scan/amigo', 'ScanController@amigo');
 
 $app->post('entrenamiento/evaluacion/inicial', 'EntrenamientoController@guardarEntIni');
 $app->post('entrenamientos/guardar', 'EntrenamientoController@guardarEntrenamiento');
+$app->post('entrenamiento/historial', 'EntrenamientoController@historialEntrenamiento');
+$app->post('entrenamiento/delete', 'EntrenamientoController@deleteEntrenamiento');
+
 
 
 

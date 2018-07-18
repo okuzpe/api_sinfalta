@@ -89,4 +89,36 @@ class EntrenamientoController extends Controller
             return response()->json(['success' => false]);
         }
     }
+
+    public function historialEntrenamiento(Request $request){
+        $token=$request->get('api_token');
+        $jugador = DB::table('jugador')
+            ->select('id_jugador','sexo','fecha_nacimiento')
+            ->where('api_token','=',$token)
+            ->get();
+
+        $historial = DB::table('jugador_entrenamientos')
+            ->select('fecha_hora','calorias_quemadas')
+            ->where('id_jugador','=',$jugador[0]->id_jugador)
+            ->get();
+
+        if ($historial->count()){
+            return response()->json(['success' => true,'historial'=>$historial]);
+        }else{
+            return response()->json(['success' => false]);
+        }
+    }
+
+    public function deleteEntrenamiento(Request $request){
+        $id_historial=$request->get('id_historial');
+
+
+        if (DB::table('jugador_entrenamientos')
+            ->where('id_entrenamiento','=',$id_historial)
+            ->delete()){
+            return response()->json(['success' => true]);
+        }else{
+            return response()->json(['success' => false]);
+        }
+    }
 }
