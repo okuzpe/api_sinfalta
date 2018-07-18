@@ -57,7 +57,7 @@ $app->post('scan/retar', 'ScanController@retar');
 $app->post('scan/amigo', 'ScanController@amigo');
 
 $app->post('entrenamiento/evaluacion/inicial', 'EntrenamientoController@guardarEntIni');
-
+$app->post('entrenamientos/guardar', 'EntrenamientoController@guardarEntrenamiento');
 
 
 

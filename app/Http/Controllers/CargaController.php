@@ -22,7 +22,7 @@ class CargaController extends Controller
 
         $token=$request->get('api_token');
         $jugador = DB::table('jugador')
-            ->select('id_jugador','tiene_imagen')
+            ->select('id_jugador','tiene_imagen','peso')
             ->where('api_token','=',$token)
             ->get();
 
@@ -41,6 +41,11 @@ class CargaController extends Controller
             $tiene_imagen=false;
         }
 
+        if ($jugador[0]->peso or $jugador[0]->id_jugador ){
+            $tiene_peso=true;
+        }else{
+            $tiene_peso=false;
+        }
 
         if (!$tiene->isEmpty()){
             return response()->json(['tiene_imagen'=>$tiene_imagen,'success' => true,

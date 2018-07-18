@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Equipo;
 use App\JugadorEntrenamiento;
+use App\JugadorEntrenamientos;
 use App\JugadorEquipo;
 use DB;
 use Illuminate\Http\Request;
@@ -67,6 +68,25 @@ class EntrenamientoController extends Controller
             }else{
                 return response()->json(['success' => false]);
             }
+        }
+    }
+
+    public function guardarEntrenamiento(Request $request){
+        $token=$request->get('api_token');
+        $jugador = DB::table('jugador')
+            ->select('id_jugador')
+            ->where('api_token','=',$token)
+            ->get();
+
+        $entrenamiento=new JugadorEntrenamientos();
+        $entrenamiento->fecha_hora=$request->get('date_time');
+        $entrenamiento->calorias_quemadas=$request->get('calorias_quemadas');
+        $entrenamiento->id_jugador=$jugador[0]->id_jugador;
+
+        if ($entrenamiento->save()){
+            return response()->json(['success' => true]);
+        }else{
+            return response()->json(['success' => false]);
         }
     }
 }
