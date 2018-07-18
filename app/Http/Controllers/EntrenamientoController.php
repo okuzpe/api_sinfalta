@@ -98,7 +98,7 @@ class EntrenamientoController extends Controller
             ->get();
 
         $historial = DB::table('jugador_entrenamientos')
-            ->select('fecha_hora','calorias_quemadas')
+            ->select('fecha_hora','calorias_quemadas','id_entrenamiento')
             ->where('id_jugador','=',$jugador[0]->id_jugador)
             ->get();
 
