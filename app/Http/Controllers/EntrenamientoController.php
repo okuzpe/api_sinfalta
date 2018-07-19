@@ -29,7 +29,7 @@ class EntrenamientoController extends Controller
             ->get();
         $peso=$request->get('peso');
         $altura=$request->get('altura');
-        $factor_tmb=$request->get('factor_tmb');
+        $factor_tmb=(double)$request->get('factor_tmb');
         $meta=$request->get('meta');
         $edad=(int)$jugador[0]->fecha_nacimiento;
 
