@@ -49,7 +49,9 @@ class EntrenamientoController extends Controller
         $entrenamiento->tmb=$tmb;
         $entrenamiento->meta=$meta;
 
-        if ($jugador->count()){
+        if (!DB::table('jugador_entrenamiento')
+            ->where('id_jugador','=',$jugador[0]->id_jugador)
+            ->count()){
             if ($entrenamiento->save()){
                 return response()->json(['success' => true,'entrenamiento' => $entrenamiento]);
             }else{
