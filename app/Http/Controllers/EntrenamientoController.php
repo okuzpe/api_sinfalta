@@ -29,7 +29,7 @@ class EntrenamientoController extends Controller
             ->get();
         $peso=$request->get('peso');
         $altura=$request->get('altura');
-        $factor_tmb=(double)$request->get('factor_tmb');
+        $factor_tmb=$request->get('factor_tmb');
         $meta=$request->get('meta');
         $edad=(int)$jugador[0]->fecha_nacimiento;
 
@@ -124,7 +124,7 @@ class EntrenamientoController extends Controller
         }
     }
 
-    public function cargarAliementacion(Request $request){
+    public function cargarPlan(Request $request){
         $token=$request->get('api_token');
         $jugador = DB::table('jugador')
             ->select('id_jugador','sexo','fecha_nacimiento')
@@ -132,11 +132,11 @@ class EntrenamientoController extends Controller
             ->get();
 
         $alimentacion=DB::table('jugador_entrenamiento')
-            ->select('meta')
+            ->select('tmb','meta')
             ->where('id_jugador','=',$jugador[0]->id_jugador)
-            ->get();
+            ->first();
 
-        if ($alimentacion->count()){
+        if ($alimentacion){
             return response()->json(['success' => true,'alimentacion'=>$alimentacion]);
         }else{
             return response()->json(['success' => false]);
