@@ -44,21 +44,17 @@ class SearchController extends Controller
     public function equipo(Request $request)
     {
         if ($request) {
-
             $token=$request->get('api_token');
             $jugador = DB::table('jugador')
                 ->select('id_jugador')
                 ->where('api_token','=',$token)
                 ->first();
-
             $query = trim($request->get('query'));
             $equipos = DB::table('equipo')
                 ->select('id_equipo','nombre','reputacion_positiva','reputacion_negativa')
                 ->where('equipo.nombre', 'LIKE', $query . '%')
-
                 ->limit(10)
                 ->get();
-
             return response()->json(['success' => true,'equipos' => $equipos]);
         }else{
             return response()->json(['success' => false]);

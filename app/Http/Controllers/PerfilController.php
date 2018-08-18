@@ -42,7 +42,7 @@ class PerfilController extends Controller
                 ->where('id_jugador', '=', $request->get("id_buscar"))
                 ->first();
         }
-//        return response()->json([$show]);
+
 
 
         $estadisticas2=new JugadorEstadisticas();

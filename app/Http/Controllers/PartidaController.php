@@ -24,7 +24,6 @@ class PartidaController extends Controller
             ->where('id_estatus','=','1')
             ->select('id_partida','latitud','longitud','id_tipopartida')
             ->get();
-
         return response()->json(['partidas'=>$partidas,'success' => true]);
     }
 

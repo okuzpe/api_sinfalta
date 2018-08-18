@@ -44,7 +44,6 @@ class LoginController extends Controller
 
     public function create(Request $request)
     {
-
         $jugador = new Jugador;
         if (Jugador::where('email', '=', Input::get('email'))->exists()) {
             return response()->json(['success' => false]);
@@ -60,6 +59,16 @@ class LoginController extends Controller
             $jugador->save();
 
             return response()->json(['api_token' => $jugador->api_token, 'success' => true]);
+        }
+    }
+    public function recuperar(Request $request)
+    {
+        $jugador = new Jugador;
+        if (Jugador::where('email', '=', Input::get('email'))->exists()) {
+            return response()->json(['success' => false]);
+        } else {
+            PHPMail();
+            return response()->json(['estado' => 'Email enviador al correo', 'success' => true]);
         }
     }
 }
